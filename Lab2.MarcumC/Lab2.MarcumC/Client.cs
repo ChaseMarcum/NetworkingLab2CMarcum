@@ -36,9 +36,9 @@ namespace Lab2.MarcumC
 
             try
             {
-                MyTcpClient.Connect(System.Net.IPAddress.Parse(ServerIpAddress), ServerPort);
+                MyTcpClient.Connect(IPAddress.Parse(ServerIpAddress), ServerPort);
                 MyIpEndPoint = (IPEndPoint)MyTcpClient.Client.LocalEndPoint;
-                Console.WriteLine(MyIpEndPoint.Port);
+                MyPort = MyIpEndPoint.Port;
                 MyIpAddress = ((IPEndPoint)MyTcpClient.Client.LocalEndPoint).Address;
             }
             catch (Exception x)
