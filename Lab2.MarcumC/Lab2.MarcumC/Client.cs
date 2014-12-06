@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Net.Sockets;
 
 namespace Lab2.MarcumC
 {
-    class Client
+    internal class Client
     {
         public TcpClient MyTcpClient;
         public string ServerIpAddress = "192.168.101.210";
@@ -23,7 +20,6 @@ namespace Lab2.MarcumC
         public NetworkStream GetStream;
         public string Responce;
 
-
         // TODO: instead of half sessions you can hard code to 00. you can just do session close.
 
         // TODO: async calls use Thread class and then Thread.Start();
@@ -31,7 +27,6 @@ namespace Lab2.MarcumC
         // getThread.Start();
 
         // Option 2 Thread newThread = new Thread(() => startNewServerClass(newClient)); Lab 3
-
 
         public Client()
         {
@@ -56,7 +51,7 @@ namespace Lab2.MarcumC
             {
                 // TODO: change my IPADDRESS to my actual ip address and change my student ID to last 6 digits XX-XXXX
                 var buffer = "REQ|" +
-                                (MyStopWatch.Elapsed.Seconds*1000 + MyStopWatch.Elapsed.Minutes*60000 +
+                                (MyStopWatch.Elapsed.Seconds * 1000 + MyStopWatch.Elapsed.Minutes * 60000 +
                                  MyStopWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC" + "|" +
                                 "19-5263" + "|" + 0 + "|" + MyIpAddress + "|" + MyPort + "|" +
                                 MyTcpClient.Client.Handle + "|" + ServerIpAddress + "|" + ServerPort + "|" +
@@ -82,10 +77,6 @@ namespace Lab2.MarcumC
                 ResponceStream = MyTcpClient.GetStream();
 
                 ResponceStream.Write(myConcatedBytes, 0, myConcatedBytes.Length);
-
-
-
-
 
                 // Getting responce
 
@@ -123,7 +114,6 @@ namespace Lab2.MarcumC
                     Console.WriteLine(i);
 
                     Responce = null;
-
                 }
                 catch (Exception x)
                 {
@@ -132,12 +122,9 @@ namespace Lab2.MarcumC
                 }
 
                 Thread.Sleep(50);
-
-
             }
 
             Console.Read();
         }
-        
     }
 }
