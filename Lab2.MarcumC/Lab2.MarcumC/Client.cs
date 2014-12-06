@@ -49,7 +49,6 @@ namespace Lab2.MarcumC
 
             for (var i = 0; i < 100; i++)
             {
-                // TODO: change my IPADDRESS to my actual ip address and change my student ID to last 6 digits XX-XXXX
                 var buffer = "REQ|" +
                                 (MyStopWatch.Elapsed.Seconds * 1000 + MyStopWatch.Elapsed.Minutes * 60000 +
                                  MyStopWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC" + "|" +
@@ -69,14 +68,14 @@ namespace Lab2.MarcumC
                     Array.Reverse(bufferBytesLength);
                 }
 
-                var myConcatedBytes = new byte[bufferBytes.Length + bufferBytesLength.Length];
+                var myConcatenatedBytes = new byte[bufferBytes.Length + bufferBytesLength.Length];
 
-                Array.Copy(bufferBytesLength, 0, myConcatedBytes, 0, bufferBytesLength.Length);
-                Array.Copy(bufferBytes, 0, myConcatedBytes, bufferBytesLength.Length, bufferBytes.Length);
+                Array.Copy(bufferBytesLength, 0, myConcatenatedBytes, 0, bufferBytesLength.Length);
+                Array.Copy(bufferBytes, 0, myConcatenatedBytes, bufferBytesLength.Length, bufferBytes.Length);
 
                 ResponceStream = MyTcpClient.GetStream();
 
-                ResponceStream.Write(myConcatedBytes, 0, myConcatedBytes.Length);
+                ResponceStream.Write(myConcatenatedBytes, 0, myConcatenatedBytes.Length);
 
                 // Getting responce
 
