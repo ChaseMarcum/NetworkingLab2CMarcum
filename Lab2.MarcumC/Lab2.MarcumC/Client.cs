@@ -114,7 +114,7 @@ namespace Lab2.MarcumC
                     Console.WriteLine(Responce);
                     Console.WriteLine(i);
 
-                    Responce += i + '|' + "\r\n";
+                    Responce += "\r\n";
                     LogArray[i] = Responce;
 
                     Responce = null;
@@ -135,7 +135,7 @@ namespace Lab2.MarcumC
 
         private static void WriteTextFile(string[] stringArray)
         {
-            System.IO.File.WriteAllLines(@"C:\Users\Public\TestFolder\LogFile.txt", stringArray);
+            System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", stringArray);
             Console.WriteLine("Created LogFile.txt");
         }
 
