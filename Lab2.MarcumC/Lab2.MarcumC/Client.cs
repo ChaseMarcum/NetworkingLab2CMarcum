@@ -19,6 +19,8 @@ namespace Lab2.MarcumC
         public NetworkStream ResponceStream;
         public NetworkStream GetStream;
         public string Responce;
+        public int ResponseDelay = 0;
+        public string[] LogArray = new string[10005];
 
         // TODO: instead of half sessions you can hard code to 00. you can just do session close.
 
@@ -52,7 +54,7 @@ namespace Lab2.MarcumC
                 var buffer = "REQ|" +
                                 (MyStopWatch.Elapsed.Seconds * 1000 + MyStopWatch.Elapsed.Minutes * 60000 +
                                  MyStopWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC" + "|" +
-                                "19-5263" + "|" + 0 + "|" + MyIpAddress + "|" + MyPort + "|" +
+                                "19-5263" + "|" + ResponseDelay + "|" + MyIpAddress + "|" + MyPort + "|" +
                                 MyTcpClient.Client.Handle + "|" + ServerIpAddress + "|" + ServerPort + "|" +
                                 "Whatever message" + "|" + 1 + "|";
 
@@ -112,6 +114,9 @@ namespace Lab2.MarcumC
                     Console.WriteLine(Responce);
                     Console.WriteLine(i);
 
+                    Responce += i + '|' + "\r\n";
+                    LogArray[i] = Responce;
+
                     Responce = null;
                 }
                 catch (Exception x)
@@ -123,7 +128,16 @@ namespace Lab2.MarcumC
                 Thread.Sleep(50);
             }
 
+            WriteTextFile(LogArray);
+
             Console.Read();
         }
+
+        private static void WriteTextFile(string[] stringArray)
+        {
+            System.IO.File.WriteAllLines(@"C:\Users\Public\TestFolder\LogFile.txt", stringArray);
+            Console.WriteLine("Created LogFile.txt");
+        }
+
     }
 }
