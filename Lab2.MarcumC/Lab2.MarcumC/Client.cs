@@ -137,18 +137,22 @@ namespace Lab2.MarcumC
 
         private static void WriteTextFile(string[] stringArray)
         {
+            var trailerRecord = new string[]; 
+            trailerRecord[0] = DateTime.Now.ToString("MMddyyyy") + '|' + DateTime.Now.ToString("HHmmss") + '|' + 0 + '|' + 0 + '|' + 0 + '|';
+
             System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", stringArray);
+            System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", trailerRecord);
             Console.WriteLine("Created LogFile.txt");
         }
 
          public string AlterResponse(string inputString)
         {
             var alteredString = inputString;
-            var startAt = alteredString.IndexOf("OIT", 0, System.StringComparison.Ordinal);
+            var startAt = alteredString.IndexOf("OIT", 0, StringComparison.Ordinal);
             startAt += 4;
             var endOfString = alteredString.Substring(startAt);
 
-            if (System.String.Compare(endOfString, "Good Req|", System.StringComparison.Ordinal) == 0)
+            if (String.Compare(endOfString, "Good Req|", StringComparison.Ordinal) == 0)
             {
                 endOfString = "1|";
             }
