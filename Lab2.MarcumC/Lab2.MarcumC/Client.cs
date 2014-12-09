@@ -139,9 +139,9 @@ namespace Lab2.MarcumC
         {
             var trailerRecord = new string[1]; 
             trailerRecord[0] = DateTime.Now.ToString("MMddyyyy") + '|' + DateTime.Now.ToString("HHmmss") + '|' + 0 + '|' + 0 + '|' + 0 + '|';
+            stringArray[100] = trailerRecord[0];
 
             System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", stringArray);
-            System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", trailerRecord);
             Console.WriteLine("Created LogFile.txt");
         }
 
