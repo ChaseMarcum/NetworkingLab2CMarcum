@@ -111,6 +111,8 @@ namespace Lab2.MarcumC
                         Responce += Convert.ToChar(data[j]);
                     }
 
+                    AlterResponse(Responce);
+
                     Console.WriteLine(Responce);
                     Console.WriteLine(i);
 
@@ -137,6 +139,29 @@ namespace Lab2.MarcumC
         {
             System.IO.File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\LogFile.txt", stringArray);
             Console.WriteLine("Created LogFile.txt");
+        }
+
+         public string AlterResponse(string inputString)
+        {
+            var alteredString = inputString;
+            var startAt = alteredString.IndexOf("OIT", 0, System.StringComparison.Ordinal);
+            startAt += 4;
+            var endOfString = alteredString.Substring(startAt);
+
+            if (System.String.Compare(endOfString, "Good Req|", System.StringComparison.Ordinal) == 0)
+            {
+                endOfString = "1|";
+            }
+            else if (endOfString == "Stand In|")
+            {
+                endOfString = "2|";
+            }
+            else if (endOfString == "Delayed |")
+            {
+                endOfString = "3|";
+            }
+            alteredString += endOfString;
+            return alteredString;
         }
 
     }
