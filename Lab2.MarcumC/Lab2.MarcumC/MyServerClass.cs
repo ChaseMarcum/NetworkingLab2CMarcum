@@ -63,22 +63,8 @@ namespace Lab2.MarcumC
                 Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " Responses = " + ResponsesSent);
             }
 
-            var myFileStream = File.OpenWrite("Lab3.Scenario1.MarcumC" + ServerClient.Client.Handle +  ".txt");
+            File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab3.Scenario1.MarcumC" + ServerClient.Client.Handle + ".txt", MyReplyArray);
 
-            var myWriter = new StreamWriter(myFileStream);
-
-            for (var a = 0; a < RequestsReceived; a++)
-            {
-                myWriter.Write(MyRequestArray[a]);
-                myWriter.Write("\r\n");
-            }
-            myWriter.Flush();
-            for (var a = 0; a < MyReplyArray.Length; a++)
-            {
-                myWriter.Write(MyReplyArray[a]);
-                myWriter.Write("\r\n");
-
-            }
             Console.WriteLine(RequestsReceived + " " + ResponsesSent);
 
         }

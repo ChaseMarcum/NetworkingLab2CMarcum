@@ -13,8 +13,8 @@ namespace Lab2.MarcumC
             twoThread.Start();
             var threeThread = new Thread(StartThirdThread);
             threeThread.Start();
-            //var fourThread = new Thread(StartForthThread);
-            //fourThread.Start();
+            var fourThread = new Thread(StartForthThread);
+            fourThread.Start();
 
             Console.Read();
         }
