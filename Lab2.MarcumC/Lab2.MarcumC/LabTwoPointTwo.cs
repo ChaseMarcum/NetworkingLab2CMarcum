@@ -34,7 +34,7 @@ namespace Lab2.MarcumC
         public int TransactionAverage = 0;
         public string MyName = "Chase Marcum";
         public string UserName = "Please enter your name: ";
-        public string MyIpAddress = "10.0.20.9";
+        public string MyIpAddress = "10.1.20.9";
         public int MyPort = 2605;
         public int TotalRequestsSent = 0;
         public int TotalResponsesReceived = 0;
@@ -93,7 +93,7 @@ namespace Lab2.MarcumC
             ActualReqPace = (int)(TotalRequestTime / TotalRequestsSent);
             ActualRspPace = (int)(TotalResponseTime / TotalResponsesReceived);
 
-            var myFileStream = File.OpenWrite("Lab2.Scenario2.PriceJ.txt");
+            var myFileStream = File.OpenWrite("Lab2.Scenario2.MarcumC.txt");
 
             var myWriter = new StreamWriter(myFileStream);
 
@@ -173,7 +173,6 @@ namespace Lab2.MarcumC
                     if (ip.AddressFamily.ToString() == AddressFamily.InterNetwork.ToString())
                     {
                         localIP = ip.ToString();
-
                     }
                 }
 
@@ -186,10 +185,10 @@ namespace Lab2.MarcumC
                 //{
                 //    responseDelay = 0;
                 //}
-                
 
 
-                var buffer = "REQ|" + (MyWatch.Elapsed.Seconds*1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000) + "|" + i + "|" + "PriceJ|21-1656|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle + "|192.168.101.210|2605|hello!!!|2|";
+
+                var buffer = "REQ|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000) + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle + "|192.168.101.210|2605|Whatever message|2|";
                 MyRequestArray[i-1] = buffer;
                 
                 var myAscii = new ASCIIEncoding();

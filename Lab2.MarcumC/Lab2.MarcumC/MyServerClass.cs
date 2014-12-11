@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Lab2.MarcumC
 {
@@ -66,7 +63,7 @@ namespace Lab2.MarcumC
                 Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " Responses = " + ResponsesSent);
             }
 
-            var myFileStream = File.OpenWrite("Lab3.Scenario1.PriceJ" + ServerClient.Client.Handle +  ".txt");
+            var myFileStream = File.OpenWrite("Lab3.Scenario1.MarcumC" + ServerClient.Client.Handle +  ".txt");
 
             var myWriter = new StreamWriter(myFileStream);
 
@@ -129,14 +126,15 @@ namespace Lab2.MarcumC
                     {
                         receivedLength -= MyGetStream.Read(data, 0, receivedLength);
                     }
+                    string myString = null;
                     for (var k = 0; k < requestLength - 1; k++)
                     {
-                        MyRequest += Convert.ToChar(data[k]);
+                        myString += Convert.ToChar(data[k]);
                     }
 
                     //Console.WriteLine(myResponse);
                     //myResponse = alterResponse(myResponse);
-                    MyRequestArray[RequestsReceived] = MyRequest;
+                    MyRequestArray[RequestsReceived] = myString;
 
                     RequestsReceived++;
                     ReadStart += requestLength + 2;

@@ -11,25 +11,25 @@ using System.Threading.Tasks;
 
 namespace Lab2.MarcumC
 {
-    class MyClientClass
+    class JohnsClient
     {
-        public int NewDataSize = 0;
-        public MyClientClass()
+        public int newDataSize = 0;
+        public JohnsClient()
         {
 
-            var myWatch = new Stopwatch();
+            Stopwatch myWatch = new Stopwatch();
             myWatch.Start();
-            var myReplies = new string[150];
-            var myClient = new TcpClient();
-            var myReplyArray = new string[105];
-            var myRequestArray = new string[105];
+            string[] myReplies = new string[150];
+            TcpClient myClient = new TcpClient();
+            string[] myReplyArray = new string[105];
+            string[] myRequestArray = new string[105];
             
             //int lastMilSecCount = 0;
             //bool firstStart = true;
             
             try
             {
-                myClient.Connect(IPAddress.Parse("192.168.101.210"), 2605);
+                myClient.Connect(System.Net.IPAddress.Parse("192.168.101.210"), 2605);
             }
             catch (Exception ex)
             {
@@ -37,12 +37,12 @@ namespace Lab2.MarcumC
             }
             Console.WriteLine("Connecting...");
 
-            var myStream = myClient.GetStream();
+            NetworkStream myStream = myClient.GetStream();
             //int i = 1;
 
             Console.WriteLine("Lab One Writing");
 
-            for (var i = 1; i < 101; i++)
+            for (int i = 1; i < 101; i++)
             {
 
                 
@@ -51,13 +51,13 @@ namespace Lab2.MarcumC
                     //firstStart = false;
                     IPHostEntry host;
 
-                    var localIP = "?";
+                    string localIP = "?";
 
                     host = Dns.GetHostEntry(Dns.GetHostName());
 
                     int port;
 
-                    foreach (var ip in host.AddressList)
+                    foreach (IPAddress ip in host.AddressList)
                     {
                         if (ip.AddressFamily.ToString() == AddressFamily.InterNetwork.ToString())
                         {
@@ -66,27 +66,27 @@ namespace Lab2.MarcumC
                         }
                     }
 
-                    var myEnd = (IPEndPoint)myClient.Client.LocalEndPoint;
+                    IPEndPoint myEnd = (IPEndPoint)myClient.Client.LocalEndPoint;
                     port = myEnd.Port;
-                    var myIp = ((IPEndPoint)myClient.Client.LocalEndPoint).Address;
+                    IPAddress myIp = ((IPEndPoint)myClient.Client.LocalEndPoint).Address;
 
 
-                    var buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC|19-5263|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|Whatever message|1|";
+                    string buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "PriceJ|21-1656|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|hello!!!|1|";
                     myRequestArray[i - 1] = buffer;
                 
-                    var myAscii = new ASCIIEncoding();
-                    var myBuffer = myAscii.GetBytes(buffer);
+                    ASCIIEncoding myAscii = new ASCIIEncoding();
+                    byte[] myBuffer = myAscii.GetBytes(buffer);
 
-                    var messageLength = (short)myBuffer.Length;
+                    short messageLength = (short)myBuffer.Length;
 
-                    var bufferLength = BitConverter.GetBytes(messageLength);
+                    byte[] bufferLength = BitConverter.GetBytes(messageLength);
 
                     if (BitConverter.IsLittleEndian)
                     {
                         Array.Reverse(bufferLength);
                     }
 
-                    var concatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
+                    byte[] concatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
                     System.Array.Copy(bufferLength, 0, concatedBuffer, 0, bufferLength.Length);
 
                     System.Array.Copy(myBuffer, 0, concatedBuffer, bufferLength.Length, myBuffer.Length);
@@ -97,26 +97,26 @@ namespace Lab2.MarcumC
                     }
                     //Console.WriteLine(tempString);
 
-                    const int myOffset = 0;
+                    int myOffset = 0;
                     myStream.Write(concatedBuffer, myOffset, concatedBuffer.Length);
 
 
 
 
                     var data = new byte[1024];
-                    var dataString = new StringBuilder();
+                    StringBuilder dataString = new StringBuilder();
 
-                    var readCount = 0;
+                    int readCount = 0;
                     myStream.ReadTimeout = 15000;
-                    var dataSize = new byte[2];
+                byte[] dataSize = new byte[2];
                     //Thread.Sleep(500);
                     try
                     {
                         myStream.Read(dataSize, 0, 1);
                         myStream.Read(dataSize, 1, 1);
                         Array.Reverse(dataSize);
-                        NewDataSize = BitConverter.ToInt16(dataSize, 0);
-                        myStream.Read(data, 0, NewDataSize);
+                        newDataSize = BitConverter.ToInt16(dataSize, 0);
+                        myStream.Read(data, 0, newDataSize);
 
                         //  Console.WriteLine("in here" + readCount);
 
@@ -130,12 +130,12 @@ namespace Lab2.MarcumC
 
                     string myResponse = null;
 
-                    for (var k = 0; k < NewDataSize-1; k++)
+                    for (int k = 0; k < newDataSize-1; k++)
                     {
                         myResponse += Convert.ToChar(data[k]);
                     }
 
-                    myResponse = AlterResponse(myResponse);
+                    myResponse = alterResponse(myResponse);
 
                     myReplyArray[i - 1] = myResponse;
 
@@ -147,17 +147,17 @@ namespace Lab2.MarcumC
             }
 
            // File.Create("Lab2-1");
-            var myFileStream = File.OpenWrite("Lab2.Scenario1.MarcumC.txt");
+            FileStream myFileStream = File.OpenWrite("Lab2.Scenario1.PriceJ.txt");
 
-            var myWriter = new StreamWriter(myFileStream);
+            StreamWriter myWriter = new StreamWriter(myFileStream);
 
-            for (var a = 0; a < 105; a++)
+            for (int a = 0; a < 105; a++)
             {
                 myWriter.Write(myRequestArray[a]);
                 myWriter.Write("\r\n");
             }
             myWriter.Flush();
-            for (var a = 0; a < 105; a++)
+            for (int a = 0; a < 105; a++)
             {
                 myWriter.Write(myReplyArray[a]);
                 myWriter.Write("\r\n");
@@ -184,31 +184,30 @@ namespace Lab2.MarcumC
 
         static byte[] GetBytes(string str)
         {
-            var bytes = new byte[str.Length * sizeof(char)];
-            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            byte[] bytes = new byte[str.Length * sizeof(char)];
+            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
 
 
-        public string AlterResponse(string inputString)
+        public string alterResponse(string inputString)
         {
-            var alteredString = inputString;
-            var startAt = alteredString.IndexOf("OIT", 0, StringComparison.Ordinal);
+            string alteredString = inputString;
+            int startAt = alteredString.IndexOf("OIT", 0);
             startAt += 4;
-            var endOfString = alteredString.Substring(startAt);
+            string endOfString = alteredString.Substring(startAt);
 
-            if (String.Compare(endOfString, "Good Req|", StringComparison.Ordinal) == 0)
+            if (endOfString.CompareTo("Good Req|") == 0)
             {
                 endOfString = "1|";
             }
-            else switch (endOfString)
+            else if (endOfString == "Stand In|")
             {
-                case "Stand In|":
-                    endOfString = "2|";
-                    break;
-                case "Delayed|":
-                    endOfString = "3|";
-                    break;
+                endOfString = "2|";
+            }
+            else if (endOfString == "Delayed|")
+            {
+                endOfString = "3|";
             }
             alteredString += endOfString;
             return alteredString;

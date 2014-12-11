@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AsynchronousClient.cs" />
+    <Compile Include="JohnsClient.cs" />
     <Compile Include="ReceiveClient.cs" />
     <Compile Include="Client.cs" />
     <Compile Include="LabThreePointOne.cs" />

@@ -11,8 +11,10 @@ namespace Lab2.MarcumC
             oneThread.Start();
             var twoThread = new Thread(StartSecondThread);
             twoThread.Start();
-            //Thread threeThread = new Thread(new ThreadStart(startThirdThread));
-            //threeThread.Start();
+            var threeThread = new Thread(StartThirdThread);
+            threeThread.Start();
+            //var fourThread = new Thread(StartForthThread);
+            //fourThread.Start();
 
             Console.Read();
         }
@@ -34,5 +36,11 @@ namespace Lab2.MarcumC
             var newLab3 = new AsynchronousClient();
             Console.Read();
         }
+        public void StartForthThread()
+        {
+            var newLab3 = new JohnsClient();
+            Console.Read();
+        }
+
     }
 }

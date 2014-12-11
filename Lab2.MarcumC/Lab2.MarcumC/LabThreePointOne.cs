@@ -60,7 +60,7 @@ namespace Lab2.MarcumC
                 Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " Responses = " + ResponsesSent);
             }
 
-            var myFileStream = File.OpenWrite("Lab3.Scenario1.PriceJ.txt");
+            var myFileStream = File.OpenWrite("Lab3.Scenario1.MarcumC.txt");
 
             var myWriter = new StreamWriter(myFileStream);
 

@@ -13,7 +13,7 @@ namespace Lab2.MarcumC
         {
             MyListener = new TcpListener(Port);
             // myWatch.Start();
-            MyListener.Start(1);
+            MyListener.Start(3);
             // while (!myListener.Pending())
             // {
             // Thread.Sleep(1000);
