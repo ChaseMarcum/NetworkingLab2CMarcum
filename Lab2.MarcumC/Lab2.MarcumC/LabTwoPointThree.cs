@@ -38,7 +38,7 @@ namespace Lab2.MarcumC
 
             try
             {
-                MyClient.Connect(IPAddress.Parse("10.0.20.9"), 2605);
+                MyClient.Connect(IPAddress.Parse("192.168.101.210"), 2605);
             }
             catch (Exception ex)
             {
@@ -164,9 +164,9 @@ namespace Lab2.MarcumC
                 }
 
                 var concatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
-                System.Array.Copy(bufferLength, 0, concatedBuffer, 0, bufferLength.Length);
+                Array.Copy(bufferLength, 0, concatedBuffer, 0, bufferLength.Length);
 
-                System.Array.Copy(myBuffer, 0, concatedBuffer, bufferLength.Length, myBuffer.Length);
+                Array.Copy(myBuffer, 0, concatedBuffer, bufferLength.Length, myBuffer.Length);
 
                 for (int j = 0; j < concatedBuffer.Length; j++)
                 {
@@ -325,7 +325,7 @@ namespace Lab2.MarcumC
                             }
                             if (foundMatch == false)
                             {
-                                var fakeString = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds) + "|" + i + "|MarcumC|19-5263|4000|10.1.20.9|5370|1386|192.168.101.210|2605|xxx-xxx-OIT-Stand In|2|";
+                                var fakeString = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds) + "|" + i + "|MarcumC|19-5263|4000|10.1.20.9|5370|1386|192.168.101.210|2605|OIT-Stand In|2|";
                                 MyReplyArray[StandInIndex++] = fakeString;
 
                                 Console.WriteLine(stringTime);

@@ -7,14 +7,16 @@ namespace Lab2.MarcumC
     {
         public TestClass()
         {
-            var oneThread = new Thread(StartFirstThread);
-            oneThread.Start();
+            //var oneThread = new Thread(StartFirstThread);
+            //oneThread.Start();
             var twoThread = new Thread(StartSecondThread);
             twoThread.Start();
-            var threeThread = new Thread(StartThirdThread);
-            threeThread.Start();
-            var fourThread = new Thread(StartForthThread);
-            fourThread.Start();
+            //var threeThread = new Thread(StartThirdThread);
+            //threeThread.Start();
+            //var fourThread = new Thread(StartForthThread);
+            //fourThread.Start();
+            //var fiveThread = new Thread(StartFifthThread);
+            //fiveThread.Start();
 
             Console.Read();
         }
@@ -27,7 +29,7 @@ namespace Lab2.MarcumC
 
         public void StartSecondThread()
         {
-            var newLab2 = new LabTwoPointTwo();
+            var newLab2 = new LabTwoPointThree();
             Console.Read();
         }
 
@@ -39,6 +41,11 @@ namespace Lab2.MarcumC
         public void StartForthThread()
         {
             var newLab3 = new JohnsClient();
+            Console.Read();
+        }
+        public void StartFifthThread()
+        {
+            var newLab3 = new Client();
             Console.Read();
         }
 

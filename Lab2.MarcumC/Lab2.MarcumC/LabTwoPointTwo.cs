@@ -34,7 +34,7 @@ namespace Lab2.MarcumC
         public int TransactionAverage = 0;
         public string MyName = "Chase Marcum";
         public string UserName = "Please enter your name: ";
-        public string MyIpAddress = "10.1.20.9";
+        public string MyIpAddress = "192.168.101.210";
         public int MyPort = 2605;
         public int TotalRequestsSent = 0;
         public int TotalResponsesReceived = 0;
@@ -54,7 +54,7 @@ namespace Lab2.MarcumC
         {
             //Stopwatch myWatch = new Stopwatch();
             MyWatch.Start();
-            
+
             MyClient = new TcpClient();
             //int lastMilSecCount = 0;
             //bool firstStart = true;
@@ -70,7 +70,7 @@ namespace Lab2.MarcumC
             Console.WriteLine("Lab Two Connecting...");
 
             MyStream = MyClient.GetStream();
-            
+
             var myEnd = (IPEndPoint)MyClient.Client.LocalEndPoint;
             Port = myEnd.Port;
             MyIp = ((IPEndPoint)MyClient.Client.LocalEndPoint).Address;
@@ -79,7 +79,7 @@ namespace Lab2.MarcumC
             getThread.Start();
             var sendThread = new Thread(new ThreadStart(SendMessages));
             sendThread.Start();
-            
+
 
             while (SendThreadActive || GetThreadActive)
             {
@@ -103,7 +103,7 @@ namespace Lab2.MarcumC
                 myWriter.Write("\r\n");
             }
             myWriter.Flush();
- 
+
             for (var a = 0; a < NumberOfRequestsToSend; a++)
             {
                 myWriter.Write(MyReplyArray[a]);
@@ -136,7 +136,7 @@ namespace Lab2.MarcumC
             MyClient.Close();
             Console.WriteLine("Lab Two Finished");
             Console.Read();
-           // Console.ReadLine();
+            // Console.ReadLine();
         }
 
 
@@ -153,7 +153,7 @@ namespace Lab2.MarcumC
             Console.WriteLine("Lab Two Writing");
             TimeTransactionsStart = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
             TimeRequestStart = TimeTransactionsStart;
-            for (var i = 1; i < NumberOfRequestsToSend+1; i++)
+            for (var i = 1; i < NumberOfRequestsToSend + 1; i++)
             {
 
                 Thread.Sleep(ConfiguredPace);
@@ -166,7 +166,7 @@ namespace Lab2.MarcumC
 
                 host = Dns.GetHostEntry(Dns.GetHostName());
 
-                
+
 
                 foreach (var ip in host.AddressList)
                 {
@@ -189,8 +189,8 @@ namespace Lab2.MarcumC
 
 
                 var buffer = "REQ|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000) + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle + "|192.168.101.210|2605|Whatever message|2|";
-                MyRequestArray[i-1] = buffer;
-                
+                MyRequestArray[i - 1] = buffer;
+
                 var myAscii = new ASCIIEncoding();
                 var myBuffer = myAscii.GetBytes(buffer);
 
@@ -207,13 +207,13 @@ namespace Lab2.MarcumC
                 Array.Copy(bufferLength, 0, concatenatedBuffer, 0, bufferLength.Length);
 
                 Array.Copy(myBuffer, 0, concatenatedBuffer, bufferLength.Length, myBuffer.Length);
-                
+
                 for (var j = 0; j < concatenatedBuffer.Length; j++)
                 {
                     _tempString += Convert.ToChar(concatenatedBuffer[j]);
                 }
-               // myRequestArray[i - 1] = tempString;
-               // Console.WriteLine(tempString);
+                // myRequestArray[i - 1] = tempString;
+                // Console.WriteLine(tempString);
                 _tempString = null;
                 const int myOffset = 0;
                 MyStream = MyClient.GetStream();
@@ -235,77 +235,77 @@ namespace Lab2.MarcumC
             MyGetStream = MyClient.GetStream();
             MyGetStream.ReadTimeout = 3000;
             //readCount = 1;
-           // myGetStream.
+            // myGetStream.
 
             //Thread.Sleep(500);
-            var replyCount = 0;  
+            var replyCount = 0;
             try
             {
                 //while ((readCount = myGetStream.Read(data, 0, 8000)) != 0)
                 //do the read until there are two bytes of data, this is the size of the message that is incoming
                 //then, loop read untill full message is recieved.
                 // then if not at max recieved messages, read for two bytes again, one at a time.
-                   //readCount = myGetStream.Read(data, 0, 15000);
+                //readCount = myGetStream.Read(data, 0, 15000);
                 //int replyCount = 0;
-                
+
                 var replyLengthBytes = new byte[2];
                 while (replyCount < NumberOfRequestsToSend)
                 {
                     if (replyCount == 0)
                     {
-                        TimeResponseStart = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000;
+                        TimeResponseStart = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
                     }
                     MyGetStream.Read(data, 0, 1);
                     MyGetStream.Read(data, 1, 1);
                     replyLengthBytes[0] = data[0];
                     replyLengthBytes[1] = data[1];
-                   // if (BitConverter.IsLittleEndian)
-                   // {
-                        Array.Reverse(replyLengthBytes);
-                  //  }
+                    // if (BitConverter.IsLittleEndian)
+                    // {
+                    Array.Reverse(replyLengthBytes);
+                    //  }
                     short replyLength = BitConverter.ToInt16(replyLengthBytes, 0);
                     //Console.WriteLine(replyLength);
 
-                  //  if (replyLength > 200)
-                   // {
-                   //     Console.WriteLine("pausing here");
-                   // }
-                   // Console.WriteLine(replyLength);
+                    //  if (replyLength > 200)
+                    // {
+                    //     Console.WriteLine("pausing here");
+                    // }
+                    // Console.WriteLine(replyLength);
                     int receivedLength = replyLength;
                     while (receivedLength != 0)
                     {
                         receivedLength -= MyGetStream.Read(data, 0, receivedLength);
                     }
-                    for (var k = 0; k < replyLength-1; k++)
+                    for (var k = 0; k < replyLength - 1; k++)
                     {
                         MyResponse += Convert.ToChar(data[k]);
                     }
                     //Console.WriteLine(myResponse);
-                   // myResponse = alterResponse(myResponse);                       I may need to uncomment this line
+                    // myResponse = alterResponse(myResponse);                       I may need to uncomment this line
                     MyReplyArray[replyCount] = MyResponse;
-                   // Console.WriteLine("\r\n");
-                   // Console.WriteLine("\r\n");
-                    ReadStart += replyLength+2;
+                    // Console.WriteLine("\r\n");
+                    // Console.WriteLine("\r\n");
+                    ReadStart += replyLength + 2;
                     replyCount++;
                     MyResponse = null;
                     TotalResponsesReceived++;
                     //  Console.WriteLine("in here" + readCount);
                 }
-               // Console.Read();
+                // Console.Read();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 Console.WriteLine(replyCount);
             }
-            TimeResponseEnd = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000;
+            TimeResponseEnd = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
             TimeTransactionsEnd = TimeResponseEnd;
             Console.WriteLine("got all responses");
             //string myResponse = null;
 
-            
-           // Console.WriteLine(readCount);
-           // File.Create("Lab2Test");
+
+            // Console.WriteLine(readCount);
+            // File.Create("Lab2Test");
 
             //myReplies = myResponse;
             //myWriter.Write(myReplies);
@@ -325,14 +325,14 @@ namespace Lab2.MarcumC
                 endOfString = "1|";
             }
             else switch (endOfString)
-            {
-                case "Stand In|":
-                    endOfString = "2|";
-                    break;
-                case "Delayed |":
-                    endOfString = "3|";
-                    break;
-            }
+                {
+                    case "Stand In|":
+                        endOfString = "2|";
+                        break;
+                    case "Delayed |":
+                        endOfString = "3|";
+                        break;
+                }
             alteredString += endOfString;
             return alteredString;
         }

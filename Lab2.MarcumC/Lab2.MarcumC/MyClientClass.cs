@@ -71,7 +71,7 @@ namespace Lab2.MarcumC
                     var myIp = ((IPEndPoint)myClient.Client.LocalEndPoint).Address;
 
 
-                    var buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC|19-5263|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|hello!!!|1|";
+                    var buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC|19-5263|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|Whatever message|1|";
                     myRequestArray[i - 1] = buffer;
                 
                     var myAscii = new ASCIIEncoding();
@@ -86,19 +86,19 @@ namespace Lab2.MarcumC
                         Array.Reverse(bufferLength);
                     }
 
-                    var concatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
-                    System.Array.Copy(bufferLength, 0, concatedBuffer, 0, bufferLength.Length);
+                    var concatenatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
+                    System.Array.Copy(bufferLength, 0, concatenatedBuffer, 0, bufferLength.Length);
 
-                    System.Array.Copy(myBuffer, 0, concatedBuffer, bufferLength.Length, myBuffer.Length);
+                    System.Array.Copy(myBuffer, 0, concatenatedBuffer, bufferLength.Length, myBuffer.Length);
                     string tempString = null;
-                    for (int j = 0; j < concatedBuffer.Length; j++)
+                    for (int j = 0; j < concatenatedBuffer.Length; j++)
                     {
-                        tempString += Convert.ToChar(concatedBuffer[j]);
+                        tempString += Convert.ToChar(concatenatedBuffer[j]);
                     }
                     //Console.WriteLine(tempString);
 
                     const int myOffset = 0;
-                    myStream.Write(concatedBuffer, myOffset, concatedBuffer.Length);
+                    myStream.Write(concatenatedBuffer, myOffset, concatenatedBuffer.Length);
 
 
 
