@@ -4,12 +4,12 @@ using System.Threading;
 
 namespace Lab2.MarcumC
 {
-    class ClientGetter
+    class ReceiveClient
     {
         private const int Port = 2605;
         public TcpListener MyListener;// = new TcpListener()
         TcpClient[] _myClients = new TcpClient[15];
-        public ClientGetter()
+        public ReceiveClient()
         {
             MyListener = new TcpListener(Port);
             // myWatch.Start();

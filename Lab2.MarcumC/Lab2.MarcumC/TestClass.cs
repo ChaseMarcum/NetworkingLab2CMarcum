@@ -7,10 +7,10 @@ namespace Lab2.MarcumC
     {
         public TestClass()
         {
-            var oneThread = new Thread(new ThreadStart(StartFirstThread));
+            var oneThread = new Thread(StartFirstThread);
             oneThread.Start();
-           // Thread twoThread = new Thread(new ThreadStart(startSecondThread));
-            //twoThread.Start();
+            var twoThread = new Thread(StartSecondThread);
+            twoThread.Start();
             //Thread threeThread = new Thread(new ThreadStart(startThirdThread));
             //threeThread.Start();
 
@@ -19,14 +19,13 @@ namespace Lab2.MarcumC
 
         public void StartFirstThread()
         {
-            var newLab3 = new ClientGetter();
+            var newLab3 = new ReceiveClient();
             Console.Read();
         }
 
         public void StartSecondThread()
         {
             var newLab2 = new LabTwoPointTwo();
-            
             Console.Read();
         }
 
