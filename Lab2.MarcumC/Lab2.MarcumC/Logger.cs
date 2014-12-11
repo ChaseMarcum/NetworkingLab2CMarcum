@@ -67,8 +67,8 @@ namespace Lab2.MarcumC
             _logLines += "Actual rsp. Pace (ms) = " + Trailer.ActualRspPaceMs + "\r\n";
             _logLines += "Configured pace (ms) = " + Trailer.ConfiguredPaceMs + "\r\n";
             _logLines += "Transaction avg. (ms) = " + Trailer.TransactionAvgMs + "\r\n";
-            _logLines += "Your name: " + Trailer.YourName + "\r\n";
-            _logLines += "Name of student whose client was used: John Price" + "\r\n";
+            _logLines += "Your name: " + "Chase Marcum" + "\r\n";
+            _logLines += "Name of student whose client was used: Chris Meyer" + "\r\n";
         }
     }
 }

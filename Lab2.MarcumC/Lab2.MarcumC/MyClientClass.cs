@@ -71,7 +71,7 @@ namespace Lab2.MarcumC
                     var myIp = ((IPEndPoint)myClient.Client.LocalEndPoint).Address;
 
 
-                    var buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC|19-5263|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|Whatever message|1|";
+                    var buffer = "REQ|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds) + "|" + i + "|" + "MarcumC|19-5263|0|" + myIp + "|" + port + "|" + myClient.Client.Handle + "|192.168.101.210|2605|hello!!!|1|";
                     myRequestArray[i - 1] = buffer;
                 
                     var myAscii = new ASCIIEncoding();
