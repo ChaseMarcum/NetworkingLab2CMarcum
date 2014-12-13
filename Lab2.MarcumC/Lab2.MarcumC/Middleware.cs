@@ -11,8 +11,8 @@ namespace Lab2.MarcumC
     internal class MiddleWare
     {
         public Stopwatch SendStopWatch;
-        public string MyName = "John Price";
-        public string ServerName = "Chase Marcum";
+        public string MyName = "Chase Marcum";
+        public string ServerName = "John Price";
         public string ClientName = "Chris Boese";
         public NetworkStream MyGetStreamToo;
         public NetworkStream MySendStreamToo;
@@ -71,7 +71,7 @@ namespace Lab2.MarcumC
 
             while (NotConnected)
             {
-                ConnectionToServer.Connect(System.Net.IPAddress.Parse("10.0.1.12"), 11000);
+                ConnectionToServer.Connect(IPAddress.Parse("192.168.1.12"), 11000);
                 if (ConnectionToServer.Connected)
                 {
                     NotConnected = false;
@@ -83,13 +83,13 @@ namespace Lab2.MarcumC
 
             MyWatch.Start();
 
-            var getThread = new Thread(new ThreadStart(GetRequests));
+            var getThread = new Thread(GetRequests);
             getThread.Start();
-            var passForwardThread = new Thread(new ThreadStart(passForward));
+            var passForwardThread = new Thread(PassForward);
             passForwardThread.Start();
-            var receivePassThread = new Thread(new ThreadStart(ReceivePass));
+            var receivePassThread = new Thread(ReceivePass);
             receivePassThread.Start();
-            var sendThread = new Thread(new ThreadStart(SendResponses));
+            var sendThread = new Thread(SendResponses);
             sendThread.Start();
             while (GetThreadActive == true)
             {
@@ -102,7 +102,7 @@ namespace Lab2.MarcumC
                     GetThreadActive = false;
                     SendThreadActive = false;
                 }
-                Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " requestsPassed = "
+                Console.WriteLine("Transactions: Requests = " + RequestsReceived + " requestsPassed = "
                     + ResponsesPassed + " responsespassedBAck = " + ResponsesPassedBack + " Responses = " + ResponsesSent);
             }
             TotalDuration = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Seconds * 60000;
@@ -114,18 +114,17 @@ namespace Lab2.MarcumC
             TimeTransactionsStart = TimeRequestStart;
             TimeTransactionsEnd = TimeResponseEnd;
             TotalTransactionTime = TimeTransactionsEnd - TimeTransactionsStart;
-            TransactionAverageTime = (int)(TotalTransactionTime / NumberOfRequestsToSend);
-            ActualReqPace = (int)(TotalRequestTime / TotalRequestsSent);
-            ActualRspPace = (int)(TotalResponseTime / TotalResponsesReceived);
+            TransactionAverageTime = TotalTransactionTime / NumberOfRequestsToSend;
+            ActualReqPace = TotalRequestTime / TotalRequestsSent;
+            ActualRspPace = TotalResponseTime / TotalResponsesReceived;
 
-            var trailer = "Requests transmitted = " + TotalRequestsSent + "\r\nResponses received = " +
-                          TotalResponsesReceived + "\r\nReq. run duration (ms) = " + TotalRequestTime +
-                          " \r\nRsp. Run duration (ms) = " + TotalResponseTime + "\r\nTrans. Duration (ms) = " +
-                          TotalTransactionTime + "\r\nActual req. pace (ms) = " + ActualReqPace +
-                          "\r\nActual rsp. Pace (ms) = " + ActualRspPace + "\r\nConfigured pace (ms) = " +
-                          ConfiguredPace + "\r\nTransaction avg. (ms) = " + TransactionAverageTime + "\r\nYour name: " +
-                          MyName + "\r\nName of student whose client was used: " + ClientName +
-                          "\r\nName of student whose server was used: " + ServerName;
+            var trailer = "Requests transmitted: " + TotalRequestsSent + "\r\nResponses Received: " +
+                          TotalResponsesReceived + "\r\nRequest Duration(ms): " + TotalRequestTime +
+                          " \r\nRResponse Run duration(ms): " + TotalResponseTime + "\r\nTransmission Duration(ms): " +
+                          TotalTransactionTime + "\r\nActual Request Pace(ms): " + ActualReqPace +
+                          "\r\nActual Responce Pace(ms): " + ActualRspPace + "\r\nConfigured Pace(ms): " +
+                          ConfiguredPace + "\r\nTransaction Average Time(ms): " + TransactionAverageTime + "\r\nMiddleware Owner's Name: " +
+                          MyName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " + ServerName;
 
             var trailerToo = DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n";
             MyReplyArray[10003] = trailer;
@@ -141,7 +140,7 @@ namespace Lab2.MarcumC
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
-                "\r\n\r\n************ Reply log ************\r\n\r\n");
+                "\r\n\r\n************ Responce log ************\r\n\r\n");
             File.AppendAllLines(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt", MyReplyArray);
@@ -155,7 +154,7 @@ namespace Lab2.MarcumC
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
-                "\r\n\r\n************ Requests to Server log ************\r\n\r\n");
+                "\r\n\r\n************ Responce from Server log ************\r\n\r\n");
             File.AppendAllLines(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt", MyPassedBackArray);
@@ -163,15 +162,14 @@ namespace Lab2.MarcumC
             Console.WriteLine(RequestsReceived + " " + ResponsesSent);
         }
 
-        public void passForward()
+        public void PassForward()
         {
             while (GetThreadActive == true || (RequestsReceived > ResponsesPassed) || ResponsesPassed < 10000)
             {
                 if (MyRequestArray[ResponsesPassed] != null)
                 {
-                    // Console.WriteLine("sending " + responsesPassed);
                     var passedParam = ResponsesPassed;
-                    var quickSendTwoThread = new Thread(() => sendSingleResponseTwo(passedParam));
+                    var quickSendTwoThread = new Thread(() => SendSingleResponseTwo(passedParam));
                     quickSendTwoThread.Start();
                     ResponsesPassed++;
                 }
@@ -182,7 +180,7 @@ namespace Lab2.MarcumC
             }
         }
 
-        public void sendSingleResponseTwo(int index)
+        public void SendSingleResponseTwo(int index)
         {
             string responseToPass = null;
             while (MyRequestArray[index] == null)

@@ -17,6 +17,10 @@ namespace Lab2.MarcumC
             fourThread.Start();
             //var fiveThread = new Thread(StartFifthThread);
             //fiveThread.Start();
+            var sixThread = new Thread(StartSixthThread);
+            sixThread.Start();
+            var sevenThread = new Thread(StartSeventhThread);
+            sevenThread.Start();
 
             Console.Read();
         }
@@ -48,6 +52,17 @@ namespace Lab2.MarcumC
             var newLab3 = new Client();
             Console.Read();
         }
+        public void StartSixthThread()
+        {
+            var newLab3 = new Client();
+            Console.Read();
+        }
+        public void StartSeventhThread()
+        {
+            var newLab3 = new Client();
+            Console.Read();
+        }
+
 
     }
 }
