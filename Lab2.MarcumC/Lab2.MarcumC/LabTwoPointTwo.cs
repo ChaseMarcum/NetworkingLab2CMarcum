@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Lab2.MarcumC
 {
-    class LabTwoPointTwo
+    internal class LabTwoPointTwo
     {
         public string MyReplies;
         public TcpClient MyClient;
@@ -24,7 +24,7 @@ namespace Lab2.MarcumC
         public int ResponseDelay = 0;
         public string[] MyReplyArray = new string[10000];
         public string[] MyRequestArray = new string[10000];
-        string _tempString = null;
+        private string _tempString = null;
         public int ReqDuration = 0;
         public int RspDuration = 0;
         public int TotalDuration = 0;
@@ -34,7 +34,7 @@ namespace Lab2.MarcumC
         public int TransactionAverage = 0;
         public string MyName = "Chase Marcum";
         public string UserName = "Please enter your name: ";
-        public string MyIpAddress = "10.220.9.215";
+        public string MyIpAddress = "192.168.1.12";
         public int MyPort = 2605;
         public int TotalRequestsSent = 0;
         public int TotalResponsesReceived = 0;
@@ -52,12 +52,9 @@ namespace Lab2.MarcumC
 
         public LabTwoPointTwo()
         {
-            //Stopwatch myWatch = new Stopwatch();
             MyWatch.Start();
 
             MyClient = new TcpClient();
-            //int lastMilSecCount = 0;
-            //bool firstStart = true;
 
             try
             {
@@ -75,11 +72,10 @@ namespace Lab2.MarcumC
             Port = myEnd.Port;
             MyIp = ((IPEndPoint)MyClient.Client.LocalEndPoint).Address;
 
-            var getThread = new Thread(new ThreadStart(GetResponses));
+            var getThread = new Thread(GetResponses);
             getThread.Start();
-            var sendThread = new Thread(new ThreadStart(SendMessages));
+            var sendThread = new Thread(SendMessages);
             sendThread.Start();
-
 
             while (SendThreadActive || GetThreadActive)
             {
@@ -89,29 +85,22 @@ namespace Lab2.MarcumC
             TotalRequestTime = TimeRequestEnd - TimeRequestStart;
             TotalResponseTime = TimeResponseEnd - TimeResponseStart;
             TotalTransactionTime = TimeTransactionsEnd - TimeTransactionsStart;
-            TransactionAverageTime = (int)(TotalTransactionTime / (int)((TotalRequestsSent / TotalResponsesReceived) * NumberOfRequestsToSend));
-            ActualReqPace = (int)(TotalRequestTime / TotalRequestsSent);
-            ActualRspPace = (int)(TotalResponseTime / TotalResponsesReceived);
+            TransactionAverageTime = TotalTransactionTime / ((TotalRequestsSent / TotalResponsesReceived) * NumberOfRequestsToSend);
+            ActualReqPace = TotalRequestTime / TotalRequestsSent;
+            ActualRspPace = TotalResponseTime / TotalResponsesReceived;
 
-            var myFileStream = File.OpenWrite("Lab2.Scenario2.MarcumC.txt");
+            File.WriteAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
+                "\r\n\r\n************ Request log ************\r\n\r\n");
 
-            var myWriter = new StreamWriter(myFileStream);
+            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt", MyRequestArray);
 
-            for (var a = 0; a < NumberOfRequestsToSend; a++)
-            {
-                myWriter.Write(MyRequestArray[a]);
-                myWriter.Write("\r\n");
-            }
-            myWriter.Flush();
+            File.AppendAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
+                "\r\n\r\n************ Reply log ************\r\n\r\n");
 
-            for (var a = 0; a < NumberOfRequestsToSend; a++)
-            {
-                myWriter.Write(MyReplyArray[a]);
-                myWriter.Write("\r\n");
-                //myWriter.Write("\r");
+            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt", MyReplyArray);
 
-            }
-            myWriter.Write("Requests transmitted = " + TotalRequestsSent +
+            File.AppendAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
+                "Requests transmitted = " + TotalRequestsSent +
                 "\r\nResponses received = " + TotalResponsesReceived +
                 "\r\nReq. run duration (ms) = " + TotalRequestTime +
                 " \r\nRsp. Run duration (ms) = " + TotalResponseTime +
@@ -122,31 +111,25 @@ namespace Lab2.MarcumC
                 "\r\nTransaction avg. (ms) = " + TransactionAverageTime +
                 "\r\nYour name: " + MyName +
                 "\r\nName of student whose client was used: " + UserName);
-            myWriter.Flush();
-            myWriter.Write(DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n");
-            myWriter.Close();
-            myFileStream.Close();
-            //myStream.Close();
-            //myClient.Close();
+
+            File.AppendAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
+                DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n");
+
             MyClient.Client.Shutdown(SocketShutdown.Send);
             MyClient.Client.Shutdown(SocketShutdown.Receive);
             MyStream.Close();
 
-            //myClient.Client.Shutdown(SocketShutdown.Send);
             MyClient.Close();
             Console.WriteLine("Lab Two Finished");
             Console.Read();
-            // Console.ReadLine();
         }
 
-
-        static byte[] GetBytes(string str)
+        private static byte[] GetBytes(string str)
         {
             var bytes = new byte[str.Length * sizeof(char)];
             System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
-
 
         public void SendMessages()
         {
@@ -155,18 +138,13 @@ namespace Lab2.MarcumC
             TimeRequestStart = TimeTransactionsStart;
             for (var i = 1; i < NumberOfRequestsToSend + 1; i++)
             {
-
                 Thread.Sleep(ConfiguredPace);
-                //Console.WriteLine(i);
-                //lastMilSecCount = myWatch.Elapsed.Milliseconds;
-                //firstStart = false;
+
                 IPHostEntry host;
 
                 var localIP = "?";
 
                 host = Dns.GetHostEntry(Dns.GetHostName());
-
-
 
                 foreach (var ip in host.AddressList)
                 {
@@ -176,19 +154,9 @@ namespace Lab2.MarcumC
                     }
                 }
 
-
-                //if (i == 25 || i == 30 || i == 76)
-                //{
-                //    responseDelay = 1500;
-                //}
-                //else
-                //{
-                //    responseDelay = 0;
-                //}
-
-
-
-                var buffer = "REQ|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000) + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle + "|192.168.101.210|2605|Whatever message|2|";
+                var buffer = "REQ|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000)
+                    + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle
+                    + "|192.168.101.210|2605|Whatever message|2|";
                 MyRequestArray[i - 1] = buffer;
 
                 var myAscii = new ASCIIEncoding();
@@ -303,7 +271,6 @@ namespace Lab2.MarcumC
             Console.WriteLine("got all responses");
             //string myResponse = null;
 
-
             // Console.WriteLine(readCount);
             // File.Create("Lab2Test");
 
@@ -311,7 +278,6 @@ namespace Lab2.MarcumC
             //myWriter.Write(myReplies);
             GetThreadActive = false;
         }
-
 
         public string AlterResponse(string inputString)
         {
@@ -329,6 +295,7 @@ namespace Lab2.MarcumC
                     case "Stand In|":
                         endOfString = "2|";
                         break;
+
                     case "Delayed |":
                         endOfString = "3|";
                         break;
