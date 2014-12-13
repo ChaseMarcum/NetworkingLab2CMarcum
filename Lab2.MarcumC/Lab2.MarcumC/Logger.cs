@@ -14,7 +14,6 @@ namespace Lab2.MarcumC
             lock (MyQ)
             {
                 MyQ.Enqueue(line + "\r\n");
-                //logLines += line + "\r\n";
             }
             return;
         }
@@ -28,47 +27,25 @@ namespace Lab2.MarcumC
             }
 
             MakeTrailer();
-            var myFileStream = File.OpenWrite("WriteLines.txt");
 
-            var myWriter = new StreamWriter(myFileStream);
-            //foreach (Object obj in (IEnumerable)myQ)
-            //{
-            //   myWriter.Write(obj);
-            //}
-            //logLines = null;
-            //MakeTrailer();
+            File.WriteAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.WriteLines.txt", _logLines);
 
-            myWriter.Write(_logLines);
-            myWriter.Flush();
-            myWriter.Close();
             Console.WriteLine("File written");
-            //System.IO.File.WriteAllText(@"C:\WriteLines.txt", logLines);
         }
 
-        //"Requests transmitted = "    [xxxxx]
-        //"Responses received = "      [xxxxx]
-        //"Req. run duration (ms) = "  [xxxxxxxxx]
-        //"Rsp. Run duration (ms) = "  [xxxxxxxxx]
-        //"Trans. Duration (ms) = "    [xxxxxxxxx]
-        //"Actual req. pace (ms) = "   [xxxx]
-        //"Actual rsp. Pace (ms) = "   [xxxx]
-        //"Configured pace (ms) = "     [xxxx]
-        //"Transaction avg. (ms) = "    [xxxx]
-        //"Your name:
-        //"Name of student whose client was used:
         public static void MakeTrailer()
         {
-            _logLines += "Requests transmitted = " + Trailer.RequestsTransmitted + "\r\n";
-            _logLines += "Responses received = " + Trailer.ResponsesReceived + "\r\n";
-            _logLines += "Req. run duration (ms) = " + Trailer.RspRunDurationMs + "\r\n";
-            _logLines += "Rsp. Run duration (ms) = " + Trailer.ReqRunDurationMs + "\r\n";
-            _logLines += "Trans. Duration (ms) = " + Trailer.TransDurationMs + "\r\n";
-            _logLines += "Actual req. pace (ms) = " + Trailer.ActualReqPaceMs + "\r\n";
-            _logLines += "Actual rsp. Pace (ms) = " + Trailer.ActualRspPaceMs + "\r\n";
-            _logLines += "Configured pace (ms) = " + Trailer.ConfiguredPaceMs + "\r\n";
-            _logLines += "Transaction avg. (ms) = " + Trailer.TransactionAvgMs + "\r\n";
+            _logLines += "Requests transmitted: " + Trailer.RequestsTransmitted + "\r\n";
+            _logLines += "Responses received: " + Trailer.ResponsesReceived + "\r\n";
+            _logLines += "Requests Run Duration(ms): " + Trailer.RspRunDurationMs + "\r\n";
+            _logLines += "Responses Run duration(ms): " + Trailer.ReqRunDurationMs + "\r\n";
+            _logLines += "Transmission Duration(ms): " + Trailer.TransDurationMs + "\r\n";
+            _logLines += "Actual Requests Pace(ms): " + Trailer.ActualReqPaceMs + "\r\n";
+            _logLines += "Actual Responses Pace(ms): " + Trailer.ActualRspPaceMs + "\r\n";
+            _logLines += "Configured Pace(ms): " + Trailer.ConfiguredPaceMs + "\r\n";
+            _logLines += "Transaction Average(ms): " + Trailer.TransactionAvgMs + "\r\n";
             _logLines += "Your name: " + "Chase Marcum" + "\r\n";
-            _logLines += "Name of student whose client was used: Chris Meyer" + "\r\n";
+            _logLines += "Name of client Creater: " + "\r\n";
         }
     }
 }
