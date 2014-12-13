@@ -29,12 +29,9 @@ namespace Lab2.MarcumC
 
         public LabTwoPointThree()
         {
-            //Stopwatch myWatch = new Stopwatch();
             MyWatch.Start();
 
             MyClient = new TcpClient();
-            //int lastMilSecCount = 0;
-            //bool firstStart = true;
 
             try
             {
@@ -48,7 +45,7 @@ namespace Lab2.MarcumC
 
             MyStream = MyClient.GetStream();
 
-            IPEndPoint myEnd = (IPEndPoint)MyClient.Client.LocalEndPoint;
+            var myEnd = (IPEndPoint)MyClient.Client.LocalEndPoint;
             Port = myEnd.Port;
             MyIp = ((IPEndPoint)MyClient.Client.LocalEndPoint).Address;
 
@@ -64,8 +61,6 @@ namespace Lab2.MarcumC
             {
                 Thread.Sleep(1000);
             }
-           // myStream.Close();
-           // myClient.Close();
 
             var myFileStream = File.OpenWrite("Lab2.Scenario3.MarcumC.txt");
 
@@ -81,8 +76,6 @@ namespace Lab2.MarcumC
                 {
                     myWriter.Write(MyReplyArray[a]);
                     myWriter.Write("\r\n");
-                    //myWriter.Write("\r");
-
                 }
                 myWriter.Write(DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n");
             myWriter.Close();
@@ -92,11 +85,9 @@ namespace Lab2.MarcumC
            
             MyStream.Close();
 
-            //myClient.Client.Shutdown(SocketShutdown.Send);
             MyClient.Close();
 
             Console.WriteLine("Lab Three Finished");
-            //Console.ReadLine();
         }
 
 
@@ -113,11 +104,6 @@ namespace Lab2.MarcumC
             Console.WriteLine("Lab Three Sending");
             for (var i = 1; i < 101; i++)
             {
-
-
-                //Console.WriteLine(i);
-                //lastMilSecCount = myWatch.Elapsed.Milliseconds;
-                //firstStart = false;
                 IPHostEntry host;
 
                 var localIP = "?";
@@ -173,7 +159,6 @@ namespace Lab2.MarcumC
                     _tempString += Convert.ToChar(concatedBuffer[j]);
                 }
                 
-                // Console.WriteLine(tempString);
                 _tempString = null;
                 const int myOffset = 0;
                 MyStream = MyClient.GetStream();
@@ -192,18 +177,9 @@ namespace Lab2.MarcumC
             var readCount = 0;
             MyGetStream = MyClient.GetStream();
             MyGetStream.ReadTimeout = 20000;
-            //readCount = 1;
-            // myGetStream.
-
-            //Thread.Sleep(500);
 
             try
             {
-                //while ((readCount = myGetStream.Read(data, 0, 8000)) != 0)
-                //do the read until there are two bytes of data, this is the size of the message that is incoming
-                //then, loop read untill full message is recieved.
-                // then if not at max recieved messages, read for two bytes again, one at a time.
-                //readCount = myGetStream.Read(data, 0, 15000);
                 var replyCount = 0;
 
                 var replyLengthBytes = new byte[2];
@@ -213,19 +189,12 @@ namespace Lab2.MarcumC
                     MyGetStream.Read(data, 1, 1);
                     replyLengthBytes[0] = data[0];
                     replyLengthBytes[1] = data[1];
-                    // if (BitConverter.IsLittleEndian)
-                    // {
-                    Array.Reverse(replyLengthBytes);
-                    //  }
-                    var replyLength = BitConverter.ToInt16(replyLengthBytes, 0);
-                    //Console.WriteLine(replyLength);
 
-                    //  if (replyLength > 200)
-                    // {
-                    //     Console.WriteLine("pausing here");
-                    // }
-                   // Console.WriteLine(replyLength);
+                    Array.Reverse(replyLengthBytes);
+
+                    var replyLength = BitConverter.ToInt16(replyLengthBytes, 0);
                     int receivedLength = replyLength;
+
                     while (receivedLength != 0)
                     {
                         receivedLength -= MyGetStream.Read(data, 0, receivedLength);
@@ -234,33 +203,17 @@ namespace Lab2.MarcumC
                     {
                         MyResponse += Convert.ToChar(data[k]);
                     }
-                   // Console.WriteLine(myResponse);
+
                     MyResponse = AlterResponse(MyResponse);
                     MyReplyArray[replyCount] = MyResponse;
-                   // Console.WriteLine("\r");
-                    // Console.WriteLine("\r\n");
-                   // readStart += replyLength + 2;
                     replyCount++;
                     MyResponse = null;
-                    //  Console.WriteLine("in here" + readCount);
                 }
-               // Console.Read();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
-
-
-            //string myResponse = null;
-
-
-           // Console.WriteLine(readCount);
-            // File.Create("Lab2Test");
-
-            //  myReplies = myResponse;
-           // myWriter.Write(myReplies);
-           // Thread.Sleep(1000);
             GetThreadActive = false;
         }
 

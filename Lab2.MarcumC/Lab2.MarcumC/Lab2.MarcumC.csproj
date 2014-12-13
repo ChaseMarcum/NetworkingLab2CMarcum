@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="AsynchronousClient.cs" />
     <Compile Include="JohnsClient.cs" />
+    <Compile Include="JohnsServer.cs" />
     <Compile Include="Middleware.cs" />
     <Compile Include="ReceiveClient.cs" />
     <Compile Include="Client.cs" />
