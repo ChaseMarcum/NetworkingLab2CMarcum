@@ -11,7 +11,7 @@ namespace Lab2.MarcumC
     internal class MiddleWare
     {
         public Stopwatch SendStopWatch;
-        public string MyName = "Chase Marcum";
+        public string MiddlewareName = "Chase Marcum";
         public string ServerName = "John Price";
         public string ClientName = "Chris Boese";
         public NetworkStream MyGetStreamToo;
@@ -26,7 +26,7 @@ namespace Lab2.MarcumC
         public NetworkStream MyStream;
         public NetworkStream MyStreamToo;
         public int Port = 2605;
-        public IPAddress MyIp;
+        public IPAddress MyIpAddress;
         public string MyResponse;
         public bool SendThreadActive = true;
         public bool GetThreadActive = true;
@@ -42,7 +42,7 @@ namespace Lab2.MarcumC
         public bool TimedOut = false;
         public TcpClient ConnectionToServer;
         public bool PassThreadActive = true;
-        public bool NotConnected = true;
+        public bool NoConnected = true;
         public int TimeRequestStart = 0;
         public int TimeRequestEnd = 0;
         public int TimeResponseStart = 0;
@@ -56,11 +56,11 @@ namespace Lab2.MarcumC
         public int TotalRequestsSent = 0;
         public int TotalResponsesReceived = 0;
         public int NumberOfRequestsToSend = 10000;
-        public int ReqDuration = 0;
-        public int RspDuration = 0;
+        public int RequestDuration = 0;
+        public int ResponseDuration = 0;
         public int TotalDuration = 0;
-        public int ActualReqPace = 0;
-        public int ActualRspPace = 0;
+        public int ActualRequestPace = 0;
+        public int ActualResponsePace = 0;
         public int ConfiguredPace = 10;
 
         public MiddleWare(TcpClient inboundClient)
@@ -69,12 +69,12 @@ namespace Lab2.MarcumC
             ServerClient = inboundClient;
             ConnectionToServer = new TcpClient();
 
-            while (NotConnected)
+            while (NoConnected)
             {
                 ConnectionToServer.Connect(IPAddress.Parse("192.168.1.12"), 11000);
                 if (ConnectionToServer.Connected)
                 {
-                    NotConnected = false;
+                    NoConnected = false;
                 }
             }
 
@@ -115,16 +115,16 @@ namespace Lab2.MarcumC
             TimeTransactionsEnd = TimeResponseEnd;
             TotalTransactionTime = TimeTransactionsEnd - TimeTransactionsStart;
             TransactionAverageTime = TotalTransactionTime / NumberOfRequestsToSend;
-            ActualReqPace = TotalRequestTime / TotalRequestsSent;
-            ActualRspPace = TotalResponseTime / TotalResponsesReceived;
+            ActualRequestPace = TotalRequestTime / TotalRequestsSent;
+            ActualResponsePace = TotalResponseTime / TotalResponsesReceived;
 
             var trailer = "Requests transmitted: " + TotalRequestsSent + "\r\nResponses Received: " +
                           TotalResponsesReceived + "\r\nRequest Duration(ms): " + TotalRequestTime +
                           " \r\nRResponse Run duration(ms): " + TotalResponseTime + "\r\nTransmission Duration(ms): " +
-                          TotalTransactionTime + "\r\nActual Request Pace(ms): " + ActualReqPace +
-                          "\r\nActual Responce Pace(ms): " + ActualRspPace + "\r\nConfigured Pace(ms): " +
+                          TotalTransactionTime + "\r\nActual Request Pace(ms): " + ActualRequestPace +
+                          "\r\nActual Responce Pace(ms): " + ActualResponsePace + "\r\nConfigured Pace(ms): " +
                           ConfiguredPace + "\r\nTransaction Average Time(ms): " + TransactionAverageTime + "\r\nMiddleware Owner's Name: " +
-                          MyName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " + ServerName;
+                          MiddlewareName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " + ServerName;
 
             var trailerToo = DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n";
             MyReplyArray[10003] = trailer;
