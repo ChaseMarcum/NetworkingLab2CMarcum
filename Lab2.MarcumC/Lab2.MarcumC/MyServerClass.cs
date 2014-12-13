@@ -30,9 +30,6 @@ namespace Lab2.MarcumC
         public int StandInIndex = 100;
         public bool TimedOut = false;
 
-
-
-
         public MyServerClass(TcpClient inboundClient)
         {
             ServerClient = inboundClient;
@@ -50,7 +47,7 @@ namespace Lab2.MarcumC
                     GetThreadActive = false;
                     SendThreadActive = false;
                 }
-                Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " Responses = " + ResponsesSent);
+                Console.WriteLine("Transactions: Requests: " + RequestsReceived + " Responses: " + ResponsesSent);
             }
 
             File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.Reply" + ServerClient.Client.Handle + ".txt", MyReplyArray);
@@ -144,8 +141,12 @@ namespace Lab2.MarcumC
             var assignmentNumber = substrings[12];
             var realWaitTime = Convert.ToInt32(waitTime);
             Thread.Sleep(realWaitTime);
-            var myGeneratedResponse = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000) + "|" + requestId + "|" + name + "|" + studentId + "|" + waitTime + "|" +
-                                         ipAddress + "|" + clientPort + "|" + clientSocket + "|" + myIp + "|" + myPort + "|" + (index + 1) + "|" + "1|";
+            var myGeneratedResponse = "RSP|" +
+                                      (MyWatch.Elapsed.Seconds*1000 + MyWatch.Elapsed.Milliseconds +
+                                       MyWatch.Elapsed.Minutes*60000) + "|" + requestId + "|" + name + "|" + studentId +
+                                      "|" + waitTime + "|" +
+                                      ipAddress + "|" + clientPort + "|" + clientSocket + "|" + myIp + "|" + myPort +
+                                      "|" + (index + 1) + "|" + "1|";
 
             return myGeneratedResponse;
         }
@@ -177,7 +178,7 @@ namespace Lab2.MarcumC
 
             for (var j = 0; j < concatenatedBuffer.Length; j++)
             {
-                _tempString += Convert.ToChar(concatenatedBuffer[j]);
+                _tempString += Convert.ToChar(j);
             }
 
             MyReplyArray[index] = _tempString;

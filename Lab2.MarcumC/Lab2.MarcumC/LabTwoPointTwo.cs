@@ -64,7 +64,7 @@ namespace Lab2.MarcumC
             {
                 Console.WriteLine(ex.Message);
             }
-            Console.WriteLine("Lab Two Connecting...");
+            Console.WriteLine("Lab Connecting...");
 
             MyStream = MyClient.GetStream();
 
@@ -92,18 +92,20 @@ namespace Lab2.MarcumC
             File.WriteAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
                 "\r\n\r\n************ Request log ************\r\n\r\n");
 
-            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt", MyRequestArray);
+            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
+                MyRequestArray);
 
             File.AppendAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
                 "\r\n\r\n************ Reply log ************\r\n\r\n");
 
-            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt", MyReplyArray);
+            File.AppendAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt", 
+                MyReplyArray);
 
             File.AppendAllText(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Request\Scenario1.MarcumC.txt",
                 "Requests transmitted = " + TotalRequestsSent +
                 "\r\nResponses received = " + TotalResponsesReceived +
                 "\r\nReq. run duration (ms) = " + TotalRequestTime +
-                " \r\nRsp. Run duration (ms) = " + TotalResponseTime +
+                "\r\nRsp. Run duration (ms) = " + TotalResponseTime +
                 "\r\nTrans. Duration (ms) = " + TotalTransactionTime +
                 "\r\nActual req. pace (ms) = " + ActualReqPace +
                 "\r\nActual rsp. Pace (ms) = " + ActualRspPace +
@@ -120,20 +122,20 @@ namespace Lab2.MarcumC
             MyStream.Close();
 
             MyClient.Close();
-            Console.WriteLine("Lab Two Finished");
+            Console.WriteLine("Lab Finished");
             Console.Read();
         }
 
         private static byte[] GetBytes(string str)
         {
             var bytes = new byte[str.Length * sizeof(char)];
-            System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
+            Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
         }
 
         public void SendMessages()
         {
-            Console.WriteLine("Lab Two Writing");
+            Console.WriteLine("Lab Writing");
             TimeTransactionsStart = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
             TimeRequestStart = TimeTransactionsStart;
             for (var i = 1; i < NumberOfRequestsToSend + 1; i++)
@@ -154,9 +156,12 @@ namespace Lab2.MarcumC
                     }
                 }
 
-                var buffer = "REQ|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000)
-                    + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" + MyClient.Client.Handle
-                    + "|192.168.101.210|2605|Whatever message|2|";
+                var buffer = "REQ|" +
+                             (MyWatch.Elapsed.Seconds*1000 + MyWatch.Elapsed.Milliseconds +
+                              MyWatch.Elapsed.Minutes*60000)
+                             + "|" + i + "|" + "MarcumC|19-5263|" + ResponseDelay + "|" + MyIp + "|" + Port + "|" +
+                             MyClient.Client.Handle
+                             + "|192.168.101.210|2605|Whatever message|2|";
                 MyRequestArray[i - 1] = buffer;
 
                 var myAscii = new ASCIIEncoding();
@@ -180,14 +185,11 @@ namespace Lab2.MarcumC
                 {
                     _tempString += Convert.ToChar(concatenatedBuffer[j]);
                 }
-                // myRequestArray[i - 1] = tempString;
-                // Console.WriteLine(tempString);
                 _tempString = null;
                 const int myOffset = 0;
                 MyStream = MyClient.GetStream();
                 MyStream.Write(concatenatedBuffer, myOffset, concatenatedBuffer.Length);
                 TotalRequestsSent++;
-                //Thread.Sleep(50);
             }
             Console.WriteLine("finished sending");
             TimeRequestEnd = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
@@ -202,20 +204,10 @@ namespace Lab2.MarcumC
             var readCount = 0;
             MyGetStream = MyClient.GetStream();
             MyGetStream.ReadTimeout = 3000;
-            //readCount = 1;
-            // myGetStream.
 
-            //Thread.Sleep(500);
             var replyCount = 0;
             try
             {
-                //while ((readCount = myGetStream.Read(data, 0, 8000)) != 0)
-                //do the read until there are two bytes of data, this is the size of the message that is incoming
-                //then, loop read untill full message is recieved.
-                // then if not at max recieved messages, read for two bytes again, one at a time.
-                //readCount = myGetStream.Read(data, 0, 15000);
-                //int replyCount = 0;
-
                 var replyLengthBytes = new byte[2];
                 while (replyCount < NumberOfRequestsToSend)
                 {
@@ -227,18 +219,11 @@ namespace Lab2.MarcumC
                     MyGetStream.Read(data, 1, 1);
                     replyLengthBytes[0] = data[0];
                     replyLengthBytes[1] = data[1];
-                    // if (BitConverter.IsLittleEndian)
-                    // {
-                    Array.Reverse(replyLengthBytes);
-                    //  }
-                    short replyLength = BitConverter.ToInt16(replyLengthBytes, 0);
-                    //Console.WriteLine(replyLength);
 
-                    //  if (replyLength > 200)
-                    // {
-                    //     Console.WriteLine("pausing here");
-                    // }
-                    // Console.WriteLine(replyLength);
+                    Array.Reverse(replyLengthBytes);
+
+                    var replyLength = BitConverter.ToInt16(replyLengthBytes, 0);
+
                     int receivedLength = replyLength;
                     while (receivedLength != 0)
                     {
@@ -248,18 +233,13 @@ namespace Lab2.MarcumC
                     {
                         MyResponse += Convert.ToChar(data[k]);
                     }
-                    //Console.WriteLine(myResponse);
-                    // myResponse = alterResponse(myResponse);                       I may need to uncomment this line
                     MyReplyArray[replyCount] = MyResponse;
-                    // Console.WriteLine("\r\n");
-                    // Console.WriteLine("\r\n");
+
                     ReadStart += replyLength + 2;
                     replyCount++;
                     MyResponse = null;
                     TotalResponsesReceived++;
-                    //  Console.WriteLine("in here" + readCount);
                 }
-                // Console.Read();
             }
             catch (Exception ex)
             {
@@ -268,25 +248,19 @@ namespace Lab2.MarcumC
             }
             TimeResponseEnd = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000;
             TimeTransactionsEnd = TimeResponseEnd;
-            Console.WriteLine("got all responses");
-            //string myResponse = null;
+            Console.WriteLine("Received all responses");
 
-            // Console.WriteLine(readCount);
-            // File.Create("Lab2Test");
-
-            //myReplies = myResponse;
-            //myWriter.Write(myReplies);
             GetThreadActive = false;
         }
 
         public string AlterResponse(string inputString)
         {
             var alteredString = inputString;
-            var startAt = alteredString.IndexOf("OIT", 0, System.StringComparison.Ordinal);
+            var startAt = alteredString.IndexOf("OIT", 0, StringComparison.Ordinal);
             startAt += 4;
             var endOfString = alteredString.Substring(startAt);
 
-            if (System.String.Compare(endOfString, "Good Req|", System.StringComparison.Ordinal) == 0)
+            if (String.Compare(endOfString, "Good Req|", StringComparison.Ordinal) == 0)
             {
                 endOfString = "1|";
             }
