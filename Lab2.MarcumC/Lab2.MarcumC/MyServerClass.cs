@@ -36,23 +36,13 @@ namespace Lab2.MarcumC
         public MyServerClass(TcpClient inboundClient)
         {
             ServerClient = inboundClient;
-           // TcpListener myListener = new TcpListener(port);
             MyWatch.Start();
-           // myListener.Start(1);
-           // while (!myListener.Pending())
-           // {
-               // Thread.Sleep(1000);
-               // Console.WriteLine("Waiting for pending connection requests");
-                //Just gonna loop here until something is pending
-           // }
 
-            //serverClient = myListener.AcceptTcpClient();
-
-            var getThread = new Thread(new ThreadStart(GetRequests));
+            var getThread = new Thread(GetRequests);
             getThread.Start();
-            var sendThread = new Thread(new ThreadStart(SendResponses));
+            var sendThread = new Thread(SendResponses);
             sendThread.Start();
-            while (GetThreadActive == true)// || sendThreadActive == true)
+            while (GetThreadActive)// || sendThreadActive == true)
             {
                 Thread.Sleep(1000);
                 if (ResponsesSent == 10000)
@@ -63,7 +53,7 @@ namespace Lab2.MarcumC
                 Console.WriteLine("Transactions so far: Requests = " + RequestsReceived + " Responses = " + ResponsesSent);
             }
 
-            File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab3.Scenario1.MarcumC" + ServerClient.Client.Handle + ".txt", MyReplyArray);
+            File.WriteAllLines(@"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.Reply" + ServerClient.Client.Handle + ".txt", MyReplyArray);
 
             Console.WriteLine(RequestsReceived + " " + ResponsesSent);
 
@@ -81,13 +71,6 @@ namespace Lab2.MarcumC
 
             try
             {
-                //while ((readCount = myGetStream.Read(data, 0, 8000)) != 0)
-                //do the read until there are two bytes of data, this is the size of the message that is incoming
-                //then, loop read untill full message is recieved.
-                // then if not at max recieved messages, read for two bytes again, one at a time.
-                //readCount = myGetStream.Read(data, 0, 15000);
-                //int requestCount = 0;
-
                 var requestLengthBytes = new byte[2];
                 while (!TimedOut)
                 {
@@ -95,18 +78,8 @@ namespace Lab2.MarcumC
                     MyGetStream.Read(data, 1, 1);
                     requestLengthBytes[0] = data[0];
                     requestLengthBytes[1] = data[1];
-                    // if (BitConverter.IsLittleEndian)
-                    // {
                     Array.Reverse(requestLengthBytes);
-                    //  }
                     var requestLength = BitConverter.ToInt16(requestLengthBytes, 0);
-                    //Console.WriteLine(replyLength);
-
-                    //  if (replyLength > 200)
-                    // {
-                    //     Console.WriteLine("pausing here");
-                    // }
-                    // Console.WriteLine(replyLength);
                     int receivedLength = requestLength;
                     while (receivedLength != 0)
                     {
@@ -118,17 +91,13 @@ namespace Lab2.MarcumC
                         myString += Convert.ToChar(data[k]);
                     }
 
-                    //Console.WriteLine(myResponse);
-                    //myResponse = alterResponse(myResponse);
                     MyRequestArray[RequestsReceived] = myString;
 
                     RequestsReceived++;
                     ReadStart += requestLength + 2;
-                    //requestCount++;
                     MyRequest = null;
 
                 }
-                // Console.Read();
             }
             catch (Exception ex)
             {
@@ -145,16 +114,12 @@ namespace Lab2.MarcumC
         {
             while (GetThreadActive == true || (RequestsReceived > ResponsesSent))
             {
-                // string baseRequest = myRequestArray[responsesSent];
-                // string baseResponse = generateResponse(baseRequest);
-                if (MyRequestArray[ResponsesSent] != null)// && myReplyArray[responsesSent] == null)
+                if (MyRequestArray[ResponsesSent] != null)
                 {
-                    //myReplyArray[responsesSent] = "blank";
-                    //sendSingleResponse();
                     var passedParam = ResponsesSent;
-                    var quickSendThread = new Thread(() => SendSingleResponse(passedParam));//new ThreadStart(sendSingleResponse));
+                    var quickSendThread = new Thread(() => SendSingleResponse(passedParam));
                     quickSendThread.Start();
-                    ResponsesSent++;//      stay commented
+                    ResponsesSent++;
                 }
                 else
                 {
@@ -165,9 +130,6 @@ namespace Lab2.MarcumC
 
         public string GenerateResponse(string baseRequest, int index)
         {
-            string myGeneratedResponse = null;
-            //myGeneratedResponse += "RSP";
-            //int index = baseRequest.IndexOf("|",0);
             var substrings = baseRequest.Split('|');
             var requestId = substrings[2];
             var name = substrings[3];
@@ -182,21 +144,19 @@ namespace Lab2.MarcumC
             var assignmentNumber = substrings[12];
             var realWaitTime = Convert.ToInt32(waitTime);
             Thread.Sleep(realWaitTime);
-            myGeneratedResponse = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000) + "|" + requestId + "|" + name + "|" + studentId + "|" + waitTime + "|" +
-                ipAddress + "|" + clientPort + "|" + clientSocket + "|" + myIp + "|" + myPort + "|" + (index + 1) + "|" + "1|";
-            //string requestID
+            var myGeneratedResponse = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes*60000) + "|" + requestId + "|" + name + "|" + studentId + "|" + waitTime + "|" +
+                                         ipAddress + "|" + clientPort + "|" + clientSocket + "|" + myIp + "|" + myPort + "|" + (index + 1) + "|" + "1|";
 
             return myGeneratedResponse;
         }
 
         public void SendSingleResponse(int index)
         {
-            string responseToSend = null;
             while (MyRequestArray[index] == null)
             {
                 Thread.Sleep(1);
             }
-            responseToSend = GenerateResponse(MyRequestArray[index], index);
+            var responseToSend = GenerateResponse(MyRequestArray[index], index);
 
             var myAscii = new ASCIIEncoding();
             var myBuffer = myAscii.GetBytes(responseToSend);
@@ -211,9 +171,9 @@ namespace Lab2.MarcumC
             }
 
             var concatenatedBuffer = new byte[myBuffer.Length + bufferLength.Length];
-            System.Array.Copy(bufferLength, 0, concatenatedBuffer, 0, bufferLength.Length);
+            Array.Copy(bufferLength, 0, concatenatedBuffer, 0, bufferLength.Length);
 
-            System.Array.Copy(myBuffer, 0, concatenatedBuffer, bufferLength.Length, myBuffer.Length);
+            Array.Copy(myBuffer, 0, concatenatedBuffer, bufferLength.Length, myBuffer.Length);
 
             for (var j = 0; j < concatenatedBuffer.Length; j++)
             {
@@ -221,19 +181,10 @@ namespace Lab2.MarcumC
             }
 
             MyReplyArray[index] = _tempString;
-            // myRequestArray[i - 1] = tempString;
-            // Console.WriteLine(tempString);
-            //if (index < 10)
-            //{
-             //   Console.WriteLine(tempString);
-            //}
             _tempString = null;
             const int myOffset = 0;
             MyStream = ServerClient.GetStream();
             MyStream.Write(concatenatedBuffer, myOffset, concatenatedBuffer.Length);
-          
-            //responsesSent++;
-
 
         }
     }
