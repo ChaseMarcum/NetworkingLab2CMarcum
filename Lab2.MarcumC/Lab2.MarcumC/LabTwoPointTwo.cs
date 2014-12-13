@@ -34,7 +34,7 @@ namespace Lab2.MarcumC
         public int TransactionAverage = 0;
         public string MyName = "Chase Marcum";
         public string UserName = "Please enter your name: ";
-        public string MyIpAddress = "192.168.101.210";
+        public string MyIpAddress = "10.220.9.215";
         public int MyPort = 2605;
         public int TotalRequestsSent = 0;
         public int TotalResponsesReceived = 0;

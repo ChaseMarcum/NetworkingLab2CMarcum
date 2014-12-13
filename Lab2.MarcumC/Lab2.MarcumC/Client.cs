@@ -10,7 +10,7 @@ namespace Lab2.MarcumC
     internal class Client
     {
         public TcpClient MyTcpClient;
-        public string ServerIpAddress = "192.168.101.210";
+        public string ServerIpAddress = "10.220.9.215";
         public int ServerPort = 2605;
         public IPAddress MyIpAddress;
         public IPEndPoint MyIpEndPoint;

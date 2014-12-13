@@ -29,7 +29,7 @@ namespace Lab2.MarcumC
             
             try
             {
-                myClient.Connect(IPAddress.Parse("192.168.101.210"), 2605);
+                myClient.Connect(IPAddress.Parse("10.220.9.215"), 2605);
             }
             catch (Exception ex)
             {
