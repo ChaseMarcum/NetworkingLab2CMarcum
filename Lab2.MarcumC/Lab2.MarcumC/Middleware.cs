@@ -182,12 +182,11 @@ namespace Lab2.MarcumC
 
         public void SendSingleResponseTwo(int index)
         {
-            string responseToPass = null;
             while (MyRequestArray[index] == null)
             {
                 Thread.Sleep(1);
             }
-            responseToPass = GenerateResponse(MyRequestArray[index], index);
+            var responseToPass = GenerateResponse(MyRequestArray[index], index);
 
             var myAscii = new ASCIIEncoding();
             var myBuffer = myAscii.GetBytes(responseToPass);
@@ -277,7 +276,8 @@ namespace Lab2.MarcumC
             var data = new byte[15000];
             var dataString = new StringBuilder();
             var readCount = 0;
-            TimeRequestStart = MyWatch.Elapsed.Minutes * 60000 + MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds;
+            TimeRequestStart = MyWatch.Elapsed.Minutes*60000 + MyWatch.Elapsed.Seconds*1000 +
+                               MyWatch.Elapsed.Milliseconds;
             var myGetStreamToo = ServerClient.GetStream();
             myGetStreamToo.ReadTimeout = 90000;
 
@@ -312,7 +312,8 @@ namespace Lab2.MarcumC
                     RequestsReceived++;
                     ReadStart += requestLength + 2;
                     myRequestAlso = null;
-                    TimeRequestEnd = MyWatch.Elapsed.Minutes * 60000 + MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds;
+                    TimeRequestEnd = MyWatch.Elapsed.Minutes*60000 + MyWatch.Elapsed.Seconds*1000 +
+                                     MyWatch.Elapsed.Milliseconds;
                 }
             }
             catch (Exception ex)
@@ -329,7 +330,8 @@ namespace Lab2.MarcumC
 
         public void SendResponses()
         {
-            TimeResponseStart = MyWatch.Elapsed.Minutes * 60000 + MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds;
+            TimeResponseStart = MyWatch.Elapsed.Minutes*60000 + MyWatch.Elapsed.Seconds*1000 +
+                                MyWatch.Elapsed.Milliseconds;
             while (GetThreadActive == true || (ResponsesPassedBack > ResponsesSent) || ResponsesSent < 10000)
             {
                 if (MyPassedBackArray[ResponsesSent] != null)
@@ -338,7 +340,8 @@ namespace Lab2.MarcumC
                     var quickSendThread = new Thread(() => SendSingleResponse(passedParam));
                     quickSendThread.Start();
                     ResponsesSent++;
-                    TimeResponseEnd = MyWatch.Elapsed.Minutes * 60000 + MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds;
+                    TimeResponseEnd = MyWatch.Elapsed.Minutes*60000 + MyWatch.Elapsed.Seconds*1000 +
+                                      MyWatch.Elapsed.Milliseconds;
                 }
                 else
                 {
@@ -353,8 +356,12 @@ namespace Lab2.MarcumC
 
             var substrings = baseRequest.Split('|');
 
-            myGeneratedResponse = "RSP|" + (MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Minutes * 60000) + "|" + substrings[2] + "|" + substrings[3] + "|" + substrings[4] + "|" + substrings[5] + "|" +
-            substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" + substrings[10] + "|" + "MidWare#" + (index + 1) + "|" + "1|";
+            myGeneratedResponse = "RSP|" +
+                                  (MyWatch.Elapsed.Seconds*1000 + MyWatch.Elapsed.Milliseconds +
+                                   MyWatch.Elapsed.Minutes*60000) + "|" + substrings[2] + "|" + substrings[3] + "|" +
+                                  substrings[4] + "|" + substrings[5] + "|" +
+                                  substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" +
+                                  substrings[10] + "|" + "Middleware " + (index + 1) + "|" + "1|";
 
             return myGeneratedResponse;
         }
