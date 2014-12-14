@@ -141,25 +141,41 @@ namespace Lab2.MarcumC
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
                 "\r\n\r\n************ Responce log ************\r\n\r\n");
-            File.AppendAllLines(
-                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
-                ".txt", MyReplyArray);
+            for (var i = 0; i < 10000; i++)
+            {
+                File.AppendAllText(
+                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                    ConnectionToServer.Client.Handle +
+                    ".txt", MyReplyArray[i]);
+            }
+
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
                 "\r\n\r\n************ Requests to Server log ************\r\n\r\n");
-            File.AppendAllLines(
-                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
-                ".txt", MyPassForwardArray);
+            for (var i = 0; i < 10000; i++)
+            {
+                File.AppendAllText(
+                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                    ConnectionToServer.Client.Handle +
+                    ".txt", MyPassForwardArray[i]);
+            }
+
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
                 "\r\n\r\n************ Responce from Server log ************\r\n\r\n");
-            File.AppendAllLines(
-                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
-                ".txt", MyPassedBackArray);
+
+            for (var i = 0; i < 10000; i++)
+            {
+                File.AppendAllText(
+                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                    ConnectionToServer.Client.Handle +
+                    ".txt", MyPassedBackArray[i]);
+            }
 
             Console.WriteLine(RequestsReceived + " " + ResponsesSent);
+            
         }
 
         public void PassForward()
