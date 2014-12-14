@@ -71,7 +71,7 @@ namespace Lab2.MarcumC
 
             while (NoConnected)
             {
-                ConnectionToServer.Connect(IPAddress.Parse("192.168.1.2"), 11000);
+                ConnectionToServer.Connect(IPAddress.Parse("192.168.1.12"), 11000);
                 if (ConnectionToServer.Connected)
                 {
                     NoConnected = false;
@@ -123,17 +123,38 @@ namespace Lab2.MarcumC
                           " \r\nRResponse Run duration(ms): " + TotalResponseTime + "\r\nTransmission Duration(ms): " +
                           TotalTransactionTime + "\r\nActual Request Pace(ms): " + ActualRequestPace +
                           "\r\nActual Responce Pace(ms): " + ActualResponsePace + "\r\nConfigured Pace(ms): " +
-                          ConfiguredPace + "\r\nTransaction Average Time(ms): " + TransactionAverageTime + "\r\nMiddleware Owner's Name: " +
-                          MiddlewareName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " + ServerName;
+                          ConfiguredPace + "\r\nTransaction Average Time(ms): " + TransactionAverageTime +
+                          "\r\nMiddleware Owner's Name: " +
+                          MiddlewareName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " +
+                          ServerName + DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") +
+                          "|0|0|0|" + "\r\n";
 
             var trailerToo = DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") + "|0|0|0|" + "\r\n";
             MyReplyArray[10003] = trailer;
             MyReplyArray[10004] = trailerToo;
 
+
             File.WriteAllText(
+                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                ConnectionToServer.Client.Handle +
+                ".txt", "Requests transmitted: " + TotalRequestsSent + "\r\nResponses Received: " +
+                        TotalResponsesReceived + "\r\nRequest Duration(ms): " + TotalRequestTime +
+                        " \r\nRResponse Run duration(ms): " + TotalResponseTime + "\r\nTransmission Duration(ms): " +
+                        TotalTransactionTime + "\r\nActual Request Pace(ms): " + ActualRequestPace +
+                        "\r\nActual Responce Pace(ms): " + ActualResponsePace + "\r\nConfigured Pace(ms): " +
+                        ConfiguredPace + "\r\nTransaction Average Time(ms): " + TransactionAverageTime +
+                        "\r\nMiddleware Owner's Name: " +
+                        MiddlewareName + "\r\nClient Owner's Name: " + ClientName + "\r\nServer Owner's Name: " +
+                        ServerName + "\r\n" + DateTime.Now.ToString("MMddyyyy") + "|" + DateTime.Now.ToString("HHmmss") +
+                        "|0|0|0|");
+
+
+            Console.WriteLine(RequestsReceived + " " + ResponsesSent);
+
+            File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
-                "\r\n\r\n************ Request log ************\r\n\r\n");
+                "\r\n\r\n************ Middleware Request from Client log ************\r\n\r\n");
 
             for (var i = 0; i < 10000; i++)
             {
@@ -146,19 +167,7 @@ namespace Lab2.MarcumC
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
-                "\r\n\r\n************ Responce log ************\r\n\r\n");
-            for (var i = 0; i < 10000; i++)
-            {
-                File.AppendAllText(
-                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
-                    ConnectionToServer.Client.Handle +
-                    ".txt", MyReplyArray[i] + "\r\n");
-            }
-
-            File.AppendAllText(
-                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
-                ".txt",
-                "\r\n\r\n************ Requests to Server log ************\r\n\r\n");
+                "\r\n\r\n************ Middleware Requests to Server log ************\r\n\r\n");
             for (var i = 0; i < 10000; i++)
             {
                 File.AppendAllText(
@@ -170,7 +179,7 @@ namespace Lab2.MarcumC
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
-                "\r\n\r\n************ Responce from Server log ************\r\n\r\n");
+                "\r\n\r\n************ Middleware Responce from Server log ************\r\n\r\n");
 
             for (var i = 0; i < 10000; i++)
             {
@@ -180,7 +189,19 @@ namespace Lab2.MarcumC
                     ".txt", MyPassedBackArray[i] + "\r\n");
             }
 
-            Console.WriteLine(RequestsReceived + " " + ResponsesSent);
+            File.AppendAllText(
+                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
+                ".txt",
+                "\r\n\r\n************ Middleware Responce to Client log ************\r\n\r\n");
+            for (var i = 0; i < 10000; i++)
+            {
+                File.AppendAllText(
+                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                    ConnectionToServer.Client.Handle +
+                    ".txt", MyReplyArray[i] + "\r\n");
+            }
+
+            
             
         }
 

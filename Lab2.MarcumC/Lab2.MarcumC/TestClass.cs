@@ -39,7 +39,7 @@ namespace Lab2.MarcumC
 
         public void StartThirdThread()
         {
-            var newLab3 = new LabTwoPointTwo();
+            var newLab3 = new AsynchronousClient();
             Console.Read();
         }
         public void StartForthThread()

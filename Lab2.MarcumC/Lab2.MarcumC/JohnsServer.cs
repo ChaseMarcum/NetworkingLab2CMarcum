@@ -209,9 +209,13 @@ namespace Lab2.MarcumC
             string myPort = substrings[10];
             string studentData = substrings[11];
             string assignmentNumber = substrings[12];
-           
-            myGeneratedResponse = "RSP|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds + myWatch.Elapsed.Minutes*60000) + "|" + substrings[2] + "|" + substrings[3] + "|" + substrings[4] + "|" + substrings[5] + "|" +
-                substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" + substrings[10] + "|" + "Server#" + (index + 1) + "|" + "1|";
+
+            myGeneratedResponse = "RSP|" +
+                                  (myWatch.Elapsed.Seconds*1000 + myWatch.Elapsed.Milliseconds +
+                                   myWatch.Elapsed.Minutes*60000) + "|" + substrings[2] + "|" + substrings[3] + "|" +
+                                  substrings[4] + "|" + substrings[5] + "|" +
+                                  substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" +
+                                  substrings[10] + "|" + "Server#" + (index + 1) + "|" + "1|";
             //string requestID
 
             return myGeneratedResponse;
