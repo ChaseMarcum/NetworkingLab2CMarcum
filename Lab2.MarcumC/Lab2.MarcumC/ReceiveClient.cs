@@ -12,7 +12,7 @@ namespace Lab2.MarcumC
         public ReceiveClient()
         {
             MyListener = new TcpListener(Port);
-            MyListener.Start(3);
+            MyListener.Start(1);
 
             var clientIndex = 0;
             while (true)

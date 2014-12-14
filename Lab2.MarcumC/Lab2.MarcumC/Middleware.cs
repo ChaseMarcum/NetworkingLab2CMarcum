@@ -225,7 +225,7 @@ namespace Lab2.MarcumC
 
             var readCount = 0;
             MyGetStream = ConnectionToServer.GetStream();
-            MyGetStream.ReadTimeout = 90000;
+            MyGetStream.ReadTimeout = 10000;
 
             try
             {
@@ -279,7 +279,7 @@ namespace Lab2.MarcumC
             TimeRequestStart = MyWatch.Elapsed.Minutes*60000 + MyWatch.Elapsed.Seconds*1000 +
                                MyWatch.Elapsed.Milliseconds;
             var myGetStreamToo = ServerClient.GetStream();
-            myGetStreamToo.ReadTimeout = 90000;
+            myGetStreamToo.ReadTimeout = 10000;
 
             try
             {

@@ -74,7 +74,7 @@ namespace Lab2.MarcumC
 
             var readCount = 0;
             MyGetStream = ServerClient.GetStream();
-            MyGetStream.ReadTimeout = 3000;
+            MyGetStream.ReadTimeout = 10000;
 
 
             try
