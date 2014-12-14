@@ -102,8 +102,8 @@ namespace Lab2.MarcumC
                     GetThreadActive = false;
                     SendThreadActive = false;
                 }
-                Console.WriteLine("Transactions: Requests = " + RequestsReceived + " requestsPassed = "
-                    + ResponsesPassed + " responsespassedBAck = " + ResponsesPassedBack + " Responses = " + ResponsesSent);
+                Console.WriteLine("Transactions: Requests: " + RequestsReceived + " Requests Passed: "
+                    + ResponsesPassed + " Responses Passed Back: " + ResponsesPassedBack + " Responses: " + ResponsesSent);
             }
             TotalDuration = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Seconds * 60000;
 
