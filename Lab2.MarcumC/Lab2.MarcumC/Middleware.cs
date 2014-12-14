@@ -71,7 +71,7 @@ namespace Lab2.MarcumC
 
             while (NoConnected)
             {
-                ConnectionToServer.Connect(IPAddress.Parse("192.168.1.12"), 11000);
+                ConnectionToServer.Connect(IPAddress.Parse("192.168.1.2"), 11000);
                 if (ConnectionToServer.Connected)
                 {
                     NoConnected = false;

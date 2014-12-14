@@ -33,7 +33,7 @@ namespace Lab2.MarcumC
 
         public void StartNewServerClass(TcpClient passedClient)
         {
-            var newServer = new MyServerClass(passedClient);
+            var newServer = new MiddleWare(passedClient);
             Console.Read();
         }
     }

@@ -16,7 +16,7 @@ namespace Lab2.MarcumC
         public TcpClient ServerClient;
         public Stopwatch MyWatch = new Stopwatch();
         public NetworkStream MyStream;
-        public int Port = 2605;
+        public int Port = 11000;
         public IPAddress MyIp;
         public string MyResponse;
         public bool SendThreadActive = true;
@@ -30,16 +30,27 @@ namespace Lab2.MarcumC
         public int StandInIndex = 100;
         public bool TimedOut = false;
 
-        public MyServerClass(TcpClient inboundClient)
+        public MyServerClass()
         {
-            ServerClient = inboundClient;
+            var myListener = new TcpListener(Port);
+            
+            myListener.Start(1);
+            while (!myListener.Pending())
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Checking FormatException connection");
+            }
+
+
+            ServerClient = myListener.AcceptTcpClient();
+
             MyWatch.Start();
 
             var getThread = new Thread(GetRequests);
             getThread.Start();
             var sendThread = new Thread(SendResponses);
             sendThread.Start();
-            while (GetThreadActive)// || sendThreadActive == true)
+            while (GetThreadActive)
             {
                 Thread.Sleep(1000);
                 if (ResponsesSent == 10000)

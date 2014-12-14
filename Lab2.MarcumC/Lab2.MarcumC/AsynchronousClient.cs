@@ -26,7 +26,7 @@ namespace Lab2.MarcumC
 
         // The port number for the remote device.
         private const int Port = 2605;
-        private const string IpStr = "192.168.1.12";
+        private const string IpStr = "192.168.1.2";
 
         public AsynchronousClient()
         {

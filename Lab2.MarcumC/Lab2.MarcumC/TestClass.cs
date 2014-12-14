@@ -15,25 +15,25 @@ namespace Lab2.MarcumC
             threeThread.Start();
             var fourThread = new Thread(StartForthThread);
             fourThread.Start();
-            var fiveThread = new Thread(StartFifthThread);
-            fiveThread.Start();
-            var sixThread = new Thread(StartSixthThread);
-            sixThread.Start();
-            var sevenThread = new Thread(StartSeventhThread);
-            sevenThread.Start();
+            //var fiveThread = new Thread(StartFifthThread);
+            //fiveThread.Start();
+            //var sixThread = new Thread(StartSixthThread);
+            //sixThread.Start();
+            //var sevenThread = new Thread(StartSeventhThread);
+            //sevenThread.Start();
 
             Console.Read();
         }
 
         public void StartFirstThread()
         {
-            var newLab3 = new ReceiveClient();
+            var newLab3 = new MyServerClass();
             Console.Read();
         }
 
         public void StartSecondThread()
         {
-            var newLab2 = new LabTwoPointTwo();
+            var newLab2 = new ReceiveClient();
             Console.Read();
         }
 
@@ -54,13 +54,13 @@ namespace Lab2.MarcumC
         }
         public void StartSixthThread()
         {
-            var newLab3 = new MiddleWare();
-            Console.Read();
+            //var newLab3 = new MiddleWare();
+            //Console.Read();
         }
         public void StartSeventhThread()
         {
-            var newLab3 = new JohnsServer();
-            Console.Read();
+            //var newLab3 = new JohnsServer();
+            //Console.Read();
         }
 
 
