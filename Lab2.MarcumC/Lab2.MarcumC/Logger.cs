@@ -45,7 +45,7 @@ namespace Lab2.MarcumC
             _logLines += "Configured Pace(ms): " + Trailer.ConfiguredPaceMs + "\r\n";
             _logLines += "Transaction Average(ms): " + Trailer.TransactionAvgMs + "\r\n";
             _logLines += "Your name: " + "Chase Marcum" + "\r\n";
-            _logLines += "Name of client Creater: Chris" + "\r\n";
+            _logLines += "Name of client Creater: " + "\r\n";
         }
     }
 }
