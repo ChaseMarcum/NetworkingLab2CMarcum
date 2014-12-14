@@ -27,7 +27,7 @@ namespace Lab2.MarcumC
 
         public void StartFirstThread()
         {
-            var newLab3 = new MyServerClass();
+            var newLab3 = new JohnsServer();
             Console.Read();
         }
 
@@ -39,7 +39,7 @@ namespace Lab2.MarcumC
 
         public void StartThirdThread()
         {
-            var newLab3 = new AsynchronousClient();
+            var newLab3 = new LabTwoPointTwo();
             Console.Read();
         }
         public void StartForthThread()

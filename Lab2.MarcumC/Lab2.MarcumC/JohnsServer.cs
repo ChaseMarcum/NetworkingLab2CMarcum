@@ -19,7 +19,7 @@ namespace Lab2.MarcumC
         public TcpClient serverClient;
         public Stopwatch myWatch = new Stopwatch();
         public NetworkStream myStream;
-        public int port = 2605;
+        public int port = 11000;
         public IPAddress myIp;
         public string myResponse;
         public bool sendThreadActive = true;
@@ -32,24 +32,36 @@ namespace Lab2.MarcumC
         string tempString = null;
         public int standInIndex = 100;
         public bool timedOut = false;
+        public TcpListener myListener;
+        public bool notConnected = true;
 
 
-
-
-        public JohnsServer(TcpClient inboundClient)
+        public JohnsServer()
         {
-            serverClient = inboundClient;
-           // TcpListener myListener = new TcpListener(port);
-            myWatch.Start();
-           // myListener.Start(1);
-           // while (!myListener.Pending())
-           // {
-               // Thread.Sleep(1000);
-               // Console.WriteLine("Waiting for pending connection requests");
-                //Just gonna loop here until something is pending
+            //myListener = new TcpListener(8080);
+            //serverClient = inboundClient; //uncomment if needed
+            //while (notConnected)
+            //{
+              //  if (myListener.Pending() == true)
+               // {
+                //    serverClient = myListener.AcceptTcpClient();
+                //    notConnected = false;
+               // }
            // }
+           
+            
+            
+             TcpListener myListener = new TcpListener(port);
+            myWatch.Start();
+            myListener.Start(1);
+            while (!myListener.Pending())
+            {
+                Thread.Sleep(1000);
+                Console.WriteLine("Waiting for pending connection requests");
+                //Just gonna loop here until something is pending
+            }
 
-            //serverClient = myListener.AcceptTcpClient();
+            serverClient = myListener.AcceptTcpClient();
 
             Thread getThread = new Thread(new ThreadStart(getRequests));
             getThread.Start();
@@ -93,7 +105,7 @@ namespace Lab2.MarcumC
 
             int readCount = 0;
             myGetStream = serverClient.GetStream();
-            myGetStream.ReadTimeout = 3000;
+            myGetStream.ReadTimeout = 10000;
 
 
             try
@@ -153,6 +165,7 @@ namespace Lab2.MarcumC
             }
             while (requestsRecieved > responsesSent)
             {
+                Thread.Sleep(10);
             }
             getThreadActive = false;
         }
@@ -181,9 +194,9 @@ namespace Lab2.MarcumC
 
         public string generateResponse(string baseRequest, int index)
         {
+            //Console.WriteLine(baseRequest);
             string myGeneratedResponse = null;
-            //myGeneratedResponse += "RSP";
-            //int index = baseRequest.IndexOf("|",0);
+            
             string[] substrings = baseRequest.Split('|');
             string requestID = substrings[2];
             string name = substrings[3];
@@ -196,10 +209,9 @@ namespace Lab2.MarcumC
             string myPort = substrings[10];
             string studentData = substrings[11];
             string assignmentNumber = substrings[12];
-            int realWaitTime = Convert.ToInt32(waitTime);
-            Thread.Sleep(realWaitTime);
-            myGeneratedResponse = "RSP|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds + myWatch.Elapsed.Minutes*60000) + "|" + requestID + "|" + name + "|" + studentID + "|" + waitTime + "|" +
-                ipAddress + "|" + clientPort + "|" + clientSocket + "|" + myIP + "|" + myPort + "|" + (index + 1) + "|" + "1|";
+           
+            myGeneratedResponse = "RSP|" + (myWatch.Elapsed.Seconds * 1000 + myWatch.Elapsed.Milliseconds + myWatch.Elapsed.Minutes*60000) + "|" + substrings[2] + "|" + substrings[3] + "|" + substrings[4] + "|" + substrings[5] + "|" +
+                substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" + substrings[10] + "|" + "Server#" + (index + 1) + "|" + "1|";
             //string requestID
 
             return myGeneratedResponse;
@@ -212,8 +224,8 @@ namespace Lab2.MarcumC
             {
                 Thread.Sleep(1);
             }
-            responseToSend = generateResponse(myRequestArray[index], index);
-
+            responseToSend = generateResponse(myRequestArray[index],index);
+         //   Console.WriteLine(responseToSend);
             ASCIIEncoding myAscii = new ASCIIEncoding();
             byte[] myBuffer = myAscii.GetBytes(responseToSend);
 
@@ -235,9 +247,15 @@ namespace Lab2.MarcumC
             {
                 tempString += Convert.ToChar(concatedBuffer[j]);
             }
-
+            //tempString = System.Text.Encoding.Default.GetString(concatedBuffer);
             myReplyArray[index] = tempString;
-
+            // myRequestArray[i - 1] = tempString;
+            // Console.WriteLine(tempString);
+            //if (index < 10)
+            //{
+             //   Console.WriteLine(tempString);
+            //}
+           // Console.WriteLine("sent " + tempString);
             tempString = null;
             int myOffset = 0;
             myStream = serverClient.GetStream();

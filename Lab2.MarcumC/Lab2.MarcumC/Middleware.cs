@@ -13,7 +13,7 @@ namespace Lab2.MarcumC
         public Stopwatch SendStopWatch;
         public string MiddlewareName = "Chase Marcum";
         public string ServerName = "John Price";
-        public string ClientName = "Chris Boese";
+        public string ClientName = "Chris Meyer";
         public NetworkStream MyGetStreamToo;
         public NetworkStream MySendStreamToo;
         public int RequestsReceived = 0;
@@ -102,8 +102,8 @@ namespace Lab2.MarcumC
                     GetThreadActive = false;
                     SendThreadActive = false;
                 }
-                Console.WriteLine("Transactions: Requests: " + RequestsReceived + " Requests Passed: "
-                    + ResponsesPassed + " Responses Passed Back: " + ResponsesPassedBack + " Responses: " + ResponsesSent);
+                Console.WriteLine("Transactions => Requests: " + RequestsReceived + "  Requests Passed: "
+                    + ResponsesPassed + "  Responses Passed Back: " + ResponsesPassedBack + "  Responses: " + ResponsesSent);
             }
             TotalDuration = MyWatch.Elapsed.Seconds * 1000 + MyWatch.Elapsed.Milliseconds + MyWatch.Elapsed.Seconds * 60000;
 
@@ -134,9 +134,15 @@ namespace Lab2.MarcumC
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
                 "\r\n\r\n************ Request log ************\r\n\r\n");
-            File.AppendAllLines(
-                @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
-                ".txt", MyRequestArray);
+
+            for (var i = 0; i < 10000; i++)
+            {
+                File.AppendAllText(
+                    @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
+                    ConnectionToServer.Client.Handle +
+                    ".txt", MyRequestArray[i] + "\r\n");
+            }
+
             File.AppendAllText(
                 @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" + ConnectionToServer.Client.Handle +
                 ".txt",
@@ -146,7 +152,7 @@ namespace Lab2.MarcumC
                 File.AppendAllText(
                     @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
                     ConnectionToServer.Client.Handle +
-                    ".txt", MyReplyArray[i]);
+                    ".txt", MyReplyArray[i] + "\r\n");
             }
 
             File.AppendAllText(
@@ -158,7 +164,7 @@ namespace Lab2.MarcumC
                 File.AppendAllText(
                     @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
                     ConnectionToServer.Client.Handle +
-                    ".txt", MyPassForwardArray[i]);
+                    ".txt", MyPassForwardArray[i] + "\r\n");
             }
 
             File.AppendAllText(
@@ -171,7 +177,7 @@ namespace Lab2.MarcumC
                 File.AppendAllText(
                     @"C:\Users\Chase\SkyDrive\Public\TestFolder\Lab4\Lab4.MarcumC.txt" +
                     ConnectionToServer.Client.Handle +
-                    ".txt", MyPassedBackArray[i]);
+                    ".txt", MyPassedBackArray[i] + "\r\n");
             }
 
             Console.WriteLine(RequestsReceived + " " + ResponsesSent);
@@ -377,7 +383,7 @@ namespace Lab2.MarcumC
                                    MyWatch.Elapsed.Minutes*60000) + "|" + substrings[2] + "|" + substrings[3] + "|" +
                                   substrings[4] + "|" + substrings[5] + "|" +
                                   substrings[6] + "|" + substrings[7] + "|" + substrings[8] + "|" + substrings[9] + "|" +
-                                  substrings[10] + "|" + "Middleware " + (index + 1) + "|" + "1|";
+                                  substrings[10] + "|" + "Middleware.MarcumC " + (index + 1) + "|" + "1|";
 
             return myGeneratedResponse;
         }
